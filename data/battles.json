@@ -1,0 +1,234 @@
+[
+	{
+    	"id": 1,
+    	"name": "Saratoga",
+    	"desc": "Turning Point of the Revolution",
+        "image": "saratoga.jpg",
+        "volume": 1,
+        "turns": 12,
+        "moraleLevels": [
+            {
+            	"name": "high",
+                "high": 15,
+            	"low": 11
+            },
+            {
+            	"name": "fatigued",
+                "high": 10,
+            	"low": 5
+            },
+            {
+            	"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+    	"startDateTime": "1777-09-19T12:00:00Z",
+    	"startBritishMorale": 14,
+        "startAmericanMorale": 14,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 2,
+    	"name": "Brandywine",
+    	"desc": "One Bold Stroke",
+        "image": "brandywine.jpg",
+        "volume": 2,
+        "turns": 12,
+        "moraleLevels": [
+            {
+            	"name": "high",
+                "high": 21,
+            	"low": 15
+            },
+            {
+            	"name": "fatigued",
+                "high": 14,
+            	"low": 6
+            },
+            {
+            	"name": "wavering",
+                "high": 5,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1777-09-11T12:00:00Z",
+    	"startBritishMorale": 20,
+        "startAmericanMorale": 20,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 3,
+    	"name": "Guilford Courthouse",
+    	"desc": "High Water Mark of the Southern Campaign",
+        "image": "guilford.jpg",
+        "volume": 3,
+        "turns": 13,
+        "moraleLevels": [
+            {
+        		"name": "high",
+                "high": 15,
+            	"low": 11
+            },
+            {
+        		"name": "fatigued",
+                "high": 10,
+            	"low": 5
+            },
+            {
+        		"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+    	"startDateTimeMorale": "1781-03-15T10:00:00Z",
+    	"startBritishMorale": 14,
+        "startAmericanMorale": 14,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 4,
+    	"name": "Eutaw Springs",
+    	"desc": "",
+        "image": "guilford.jpg",
+        "volume": 3.1,
+        "turns": 10,
+        "moraleLevels": [
+            {
+            	"name": "high",
+                "high": 15,
+            	"low": 11
+            },
+            {
+            	"name": "fatigued",
+                "high": 10,
+            	"low": 5
+            },
+            {
+            	"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1781-09-08T11:00:00Z",
+    	"startBritishMorale": 13,
+        "startAmericanMorale": 14,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 5,
+    	"name": "Monmouth Courthouse",
+    	"desc": "The Longest Battle",
+        "image": "monmouth.jpg",
+        "volume": 5,
+        "turns": 14,
+        "moraleLevels": [
+            {
+            	"name": "high",
+                "high": 21,
+            	"low": 16
+            },
+            {
+            	"name": "fatigued",
+                "high": 15,
+            	"low": 6
+            },
+            {
+            	"name": "wavering",
+                "high": 5,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1778-06-28T10:00:00Z",
+        "startBritishMorale": 20,
+        "startAmericanMorale": 20,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 6,
+    	"name": "Germantown",
+    	"desc": "Washington Strikes Back!",
+        "image": "germantown.jpg",
+        "volume": 7,
+        "turns": 10,
+        "moraleLevels": [
+        	{
+            	"name": "high",
+                "high": 15,
+            	"low": 11
+            },
+        	{
+            	"name": "fatigued",
+                "high": 10,
+            	"low": 5
+            },
+            {
+            	"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1777-10-04T09:20:00Z",
+        "startBritishMorale": 14,
+        "startAmericanMorale": 13,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 7,
+    	"name": "Newtown",
+    	"desc": "Battles with the Iroquis Confederacy",
+        "image": "newtown.jpg",
+        "volume": 8,
+        "turns": 12,
+        "moraleLevels": [
+        	{
+            	"name": "high",
+                "high": 15,
+            	"low": 10
+            },
+        	{
+            	"name": "fatigued",
+                "high": 9,
+            	"low": 5
+            },
+            {
+            	"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1779-08-29T12:00:00Z",
+        "startBritishMorale": 13,
+        "startAmericanMorale": 14,
+        "startFrenchMorale": 0
+    },
+	{
+    	"id": 8,
+    	"name": "Oriskany",
+    	"desc": "Battles with the Iroquis Confederacy",
+        "image": "newtown.jpg",
+        "volume": 8.1,
+        "turns": 14,
+        "moraleLevels": [
+        	{
+            	"name": "high",
+                "high": 15,
+            	"low": 10
+            },
+            {
+            	"name": "fatigued",
+                "high": 9,
+            	"low": 3
+            },
+            {
+            	"name": "wavering",
+                "high": 2,
+            	"low": 1
+            }
+        ],
+        "startDateTime": "1777-08-6T12:00:00Z",
+        "startBritishMorale": 14,
+        "startAmericanMorale": 14,
+        "startFrenchMorale": 0
+    }
+]

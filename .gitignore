@@ -25,3 +25,15 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# Cordova
+cordova/hooks/
+cordova/platforms/
+cordova/plugins/
+cordova/www/
+
+#idea
+.idea/
+
+# misc
+*.pst

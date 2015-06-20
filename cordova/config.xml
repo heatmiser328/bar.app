@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.ica.lb" version="1.0.0">
+  <name>LBA</name>
+  <description>
+   Lb Bataille Assistant
+  </description>
+  <author email="jcapuano32@gmail.com" href="https://ica.com">
+   ICA Team
+  </author>
+  <icon src="images/lb.png" />
+</widget>
