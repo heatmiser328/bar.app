@@ -2,57 +2,23 @@ var Battles = require('../core/battles.js');
 var Phases = require('../core/phases.js');
 var Current = require('../core/current.js');
 var config = require('../views/config.js');
+var Spinner = require('../widgets/spinner.js');
+var Initiative = require('../views/initiative.js');
 var log = require('../core/log.js');
 
-function createTab(title, image) {
+function createTab(title, image, tabcontent) {
 	var tab = tabris.create("Tab", {
     	title: title, // converted to upper-case on Android
         image: {src: image, scale: 2} // image only used by iOS
 	});
-    tabris.create("TextView", {
+    tabcontent = tabcontent || tabris.create("TextView", {
     	layoutData: {centerX: 0, centerY: 0},
         text: "Content of Tab " + title
-	}).appendTo(tab);
+	});
+    tabcontent.appendTo(tab);
     return tab;
 }
 
-function createSpinLabel(relative, text, handler) {
-    var composite = tabris.create("Composite", {
-    	layoutData: {left: 0, right: [0,3], top: (relative ? [relative, 0] : 0)},
-    	//background: "white",
-        highlightOnTouch: true
-    });
-	    var prevBtn = tabris.create("Button", {
-	    	layoutData: {left: 0, top: 0},
-	        text: "<"
-		}).on("select", function() {
-        	handler(labelView, -1);
-        }).appendTo(composite);
-	    
-	    var compositeLabelView = tabris.create("Composite", {
-        	layoutData: {left: [prevBtn,2], right: [20,0], centerY: 0},
-	    	//background: "green",
-	        highlightOnTouch: true
-	    });
-		    var labelView = tabris.create("TextView", {
-		    	text: text,
-	    		layoutData: {centerX: 0, centerY: 0},
-			}).appendTo(compositeLabelView);
-		compositeLabelView.appendTo(composite);
-	    
-	    var nextBtn = tabris.create("Button", {
-	    	layoutData: {left: [compositeLabelView,0], top: 0},
-	        text: ">"
-		}).on("select", function() {
-        	handler(labelView, 1);
-        }).appendTo(composite);
-	
-    composite.setLabel = function(text) {
-    	labelView.set('text', text);
-    }
-    
-    return composite;
-}
 
 function show(battle, current) {
 	var page = tabris.create("Page", {
@@ -77,7 +43,7 @@ function show(battle, current) {
 	}).appendTo(composite);
     
     tabris.create("Action", {
-    	image: "images/ic_action_refresh.png"
+    	image: "images/refresh.png"
 	}).on("select", function() {
     	log.debug('Reset ' + battle.name);
     	Current.reset(battle);
@@ -92,12 +58,12 @@ function show(battle, current) {
         highlightOnTouch: true
     });
     // date/time
-    var spinTurn = createSpinLabel(null, Current.turn(), function(labelView, incr) {
+    var spinTurn = Spinner.create(null, Current.turn(), function(labelView, incr) {
 		var turn = (incr > 0) ? Current.nextTurn() : Current.prevTurn();
     	labelView.set("text", turn);
 	}).appendTo(compositeTurn);
     // phase
-    var spinPhase = createSpinLabel(spinTurn, Current.phase(), function(labelView, incr) {
+    var spinPhase = Spinner.create({top: [spinTurn,0]}, Current.phase(), function(labelView, incr) {
 		var phase = (incr > 0) ? Current.nextPhase() : Current.prevPhase();
     	labelView.set("text", phase);
         spinTurn.setLabel(Current.turn());
@@ -111,7 +77,7 @@ function show(battle, current) {
 		layoutData: {left: 0, top: [composite, 10], right: 0, bottom: 0},
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
-    createTab('Initiative', 'images/dice.png').appendTo(folder);
+    createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder);
     createTab('Fire', 'images/fire.png').appendTo(folder);
     createTab('Melee', 'images/melee.png').appendTo(folder);
     createTab('Morale', 'images/morale.png').appendTo(folder);
