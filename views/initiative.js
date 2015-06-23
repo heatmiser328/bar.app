@@ -1,5 +1,6 @@
 var Spinner = require('../widgets/spinner.js');
 var Dice = require('../widgets/dice.js');
+var Initiative = require('../core/initiative.js');
 var config = require('../views/config.js');
 var log = require('../core/log.js');
 
@@ -70,6 +71,10 @@ function createSpinner(label, value, edit, relatives, handler) {
     composite.setValue = function(value) {
     	valueView.set('text', value);
     }
+    composite.getValue = function() {
+    	var value = valueView.get('text');
+        return parseInt(value, 10);
+    }
     
     return composite;
 }
@@ -98,13 +103,11 @@ function create(battle) {
     
     var diceView = Dice.create([
     	{num: 1, low: 0, high: 9, color: 'red'},
-    	{num: 1, low: 0, high: 9, color: 'white'}
+    	{num: 1, low: 0, high: 9, color: 'blue'}
     ], {left: 50, top: [spinAmerican, 10]}, function(dice) {
-    	log.debug('Roll!');
-        
-        resultView.set('text', 'Stuff happened!')
-        
-        
+    	log.debug('Determine initiative');
+        var result = Initiative.calc(battle, dice[0].value, spinBritish.getValue(), dice[1].value, spinAmerican.getValue());
+        resultView.set('text', result)
 	}).appendTo(composite);
     
     var resultView = tabris.create("TextView", {
