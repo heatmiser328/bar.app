@@ -58,15 +58,15 @@ function show(battle, current) {
         highlightOnTouch: true
     });
     // date/time
-    var spinTurn = Spinner.create(null, Current.turn(), function(labelView, incr) {
+    var spinTurn = Spinner.create(null, Current.turn(), false, {left: 0, right: [0,3], top: 0}, function(valueView, incr) {
 		var turn = (incr > 0) ? Current.nextTurn() : Current.prevTurn();
-    	labelView.set("text", turn);
+    	valueView.set("text", turn);
 	}).appendTo(compositeTurn);
     // phase
-    var spinPhase = Spinner.create({top: [spinTurn,0]}, Current.phase(), function(labelView, incr) {
+    var spinPhase = Spinner.create(null, Current.phase(), false, {left: 0, right: [0,3], top: [spinTurn,0]}, function(valueView, incr) {
 		var phase = (incr > 0) ? Current.nextPhase() : Current.prevPhase();
-    	labelView.set("text", phase);
-        spinTurn.setLabel(Current.turn());
+    	valueView.set("text", phase);
+        spinTurn.setValue(Current.turn());
 	}).appendTo(compositeTurn);
     compositeTurn.appendTo(composite);
     
