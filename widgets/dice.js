@@ -40,6 +40,10 @@ function create(dieopts, layout, handler) {
         leftOf = die.view;
     });
     
+    composite.dice = function() {
+    	return dice.dice();
+    }
+    
     return composite;
 }
 

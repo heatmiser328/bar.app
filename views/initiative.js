@@ -51,7 +51,8 @@ function create(battle) {
     
     var resultView = tabris.create("TextView", {
     	text: "",
-    	layoutData: {left: [diceView, 20], top: [spinAmerican, 20]}
+    	layoutData: {left: [diceView, 20], top: [spinAmerican, 25]},
+        font: 'bold 24px'
 	}).appendTo(composite);
  
 	return composite;

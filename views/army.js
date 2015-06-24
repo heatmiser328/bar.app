@@ -55,7 +55,7 @@ function create(battle) {
 
 module.exports = {
 	create: function(battle) {
-    	log.debug('Creating Admin for ' + battle.name);
+    	log.debug('Creating Army for ' + battle.name);
     	return create(battle);
     }
 };
