@@ -3,6 +3,7 @@ var Phases = require('../core/phases.js');
 var Current = require('../core/current.js');
 var config = require('../views/config.js');
 var Spinner = require('../widgets/spinner.js');
+var Admin = require('../views/admin.js');
 var Initiative = require('../views/initiative.js');
 var log = require('../core/log.js');
 
@@ -77,6 +78,7 @@ function show(battle, current) {
 		layoutData: {left: 0, top: [composite, 10], right: 0, bottom: 0},
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
+    createTab('Admin', 'images/dice.png', Admin.create(battle)).appendTo(folder);
     createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder);
     createTab('Fire', 'images/fire.png').appendTo(folder);
     createTab('Melee', 'images/melee.png').appendTo(folder);

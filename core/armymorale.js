@@ -9,6 +9,16 @@ function find(levels, morale) {
 }
 
 module.exports = {
+	maxMorale: function(levels) {
+		for (var i = 0; i<levels.length; i++) {
+	    	var l = levels[i];
+	    	if (l.name == 'high') {
+	        	return l.high;
+	        }
+	    }
+		return 1;
+    },
+
 	initiativeModifier: function(levels, morale) {
     	var level = find(levels, morale);
         if (level.name == 'high') {

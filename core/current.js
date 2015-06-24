@@ -44,6 +44,9 @@ module.exports = {
         }
         return current;
     },
+	save: function(current) {
+    	save(current);
+    },
     reset: function(battle) {
         reset(battle);
     	return load();
