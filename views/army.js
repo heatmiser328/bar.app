@@ -19,6 +19,7 @@ function create(battle) {
 	var maxMorale = ArmyMorale.maxMorale(battle.moraleLevels);
 	var current = Current.get(battle);
 	var composite = tabris.create("Composite", {
+    	id: 'armyView',
     	//background: "white",
     	layoutData: {centerX: 0, top: config.PAGE_MARGIN},
         highlightOnTouch: true
@@ -49,6 +50,13 @@ function create(battle) {
     	valueView.set("text", current.frenchMorale);
         Current.save(current);
 	}).appendTo(composite);
+    
+    composite.reset = function() {
+    	current = Current.get(battle);
+        spinBritish.setValue(current.britishMorale);
+        spinAmerican.setValue(current.americanMorale);
+        spinFrench.setValue(current.frenchMorale);
+    }
     
 	return composite;
 }

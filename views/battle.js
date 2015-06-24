@@ -6,6 +6,7 @@ var Spinner = require('../widgets/spinner.js');
 var Army = require('../views/army.js');
 var Initiative = require('../views/initiative.js');
 var Morale = require('../views/morale.js');
+var Victory = require('../views/victory.js');
 var log = require('../core/log.js');
 
 function createTab(title, image, tabcontent) {
@@ -18,11 +19,13 @@ function createTab(title, image, tabcontent) {
         text: "Content of Tab " + title
 	});
     tabcontent.appendTo(tab);
+    tab.reset = tabcontent.reset;
     return tab;
 }
 
 
 function show(battle, current) {
+	var tabs = [];
 	var page = tabris.create("Page", {
     	title: battle.name
 	});
@@ -49,8 +52,13 @@ function show(battle, current) {
 	}).on("select", function() {
     	log.debug('Reset ' + battle.name);
     	Current.reset(battle);
-    	spinTurn.setLabel(Current.turn());
-    	spinPhase.setLabel(Current.phase());
+    	spinTurn.setValue(Current.turn());
+    	spinPhase.setValue(Current.phase());
+        tabs.forEach(function(tab) {
+        	if (tab.reset && typeof tab.reset == 'function') {
+            	tab.reset();
+            }
+        });
 	});
     
     // current
@@ -79,12 +87,12 @@ function show(battle, current) {
 		layoutData: {left: 0, top: [composite, 10], right: 0, bottom: 0},
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
-    createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder);
-    createTab('Fire', 'images/fire.png').appendTo(folder);
-    createTab('Melee', 'images/melee.png').appendTo(folder);
-    createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder);
-    createTab('Army', 'images/dice.png', Army.create(battle)).appendTo(folder);
-    createTab('Victory', 'images/victory.png').appendTo(folder);
+    tabs.push(createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder));
+    tabs.push(createTab('Fire', 'images/fire.png').appendTo(folder));
+    tabs.push(createTab('Melee', 'images/melee.png').appendTo(folder));
+    tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));
+    tabs.push(createTab('Army', 'images/army.png', Army.create(battle)).appendTo(folder));
+    tabs.push(createTab('Victory', 'images/victory.png', Victory.create(battle)).appendTo(folder));
     folder.appendTo(page);
     
     page.open();
