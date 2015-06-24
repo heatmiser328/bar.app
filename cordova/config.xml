@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ica.lb" version="1.0.0">
-  <name>LBA</name>
+  <name>BAR</name>
   <description>
-   Lb Bataille Assistant
+   Battles of the American Revolution Assistant
   </description>
-  <author email="jcapuano32@gmail.com" href="https://ica.com">
+  <author email="jcapuano328@gmail.com" href="https://ica.com">
    ICA Team
   </author>
-  <icon src="images/lb.png" />
+  <icon src="images/icon.png" />
 </widget>
