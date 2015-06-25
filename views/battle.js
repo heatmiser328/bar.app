@@ -5,12 +5,14 @@ var config = require('../views/config.js');
 var Spinner = require('../widgets/spinner.js');
 var Army = require('../views/army.js');
 var Initiative = require('../views/initiative.js');
+var Fire = require('../views/fire.js');
 var Morale = require('../views/morale.js');
 var Victory = require('../views/victory.js');
 var log = require('../core/log.js');
 
 function createTab(title, image, tabcontent) {
 	var tab = tabris.create("Tab", {
+    	layoutData: {left: 0, right: 0, top: 0, bottom: 0},
     	title: title, // converted to upper-case on Android
         image: {src: image, scale: 2} // image only used by iOS
 	});
@@ -87,8 +89,9 @@ function show(battle, current) {
 		layoutData: {left: 0, top: [composite, 10], right: 0, bottom: 0},
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
+    
     tabs.push(createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder));
-    tabs.push(createTab('Fire', 'images/fire.png').appendTo(folder));
+    tabs.push(createTab('Fire', 'images/fire.png', Fire.create(battle)).appendTo(folder));
     tabs.push(createTab('Melee', 'images/melee.png').appendTo(folder));
     tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));
     tabs.push(createTab('Army', 'images/army.png', Army.create(battle)).appendTo(folder));
