@@ -1,6 +1,15 @@
+var Spinner = require('../widgets/spinner.js');
 var Dice = require('../widgets/dice.js');
-var Fire = require('../core/fire.js');
+var Melee = require('../core/melee.js');
 var log = require('../core/log.js');
+
+function increment(v, i) {
+	v += i;
+    if (v < 1) {
+    	v = 1;
+    }
+    return v;
+}
 
 var firetype = Fire.types[0];
 var firesps = Fire.sps[0];
