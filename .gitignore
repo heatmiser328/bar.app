@@ -36,4 +36,5 @@ cordova/www/
 .idea/
 
 # misc
+dist/
 *.pst
