@@ -123,7 +123,7 @@ function create(battle) {
 
 module.exports = {
 	create: function(battle) {
-    	log.debug('Creating Morale for ' + battle.name);
+    	log.debug('Creating Fire for ' + battle.name);
     	return create(battle);
     }
 };

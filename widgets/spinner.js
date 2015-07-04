@@ -15,7 +15,7 @@ function create(label, value, edit, layoutData, handler) {
             : null;
     
 	    var prevBtn = tabris.create("Button", {
-	    	layoutData: {left: (labelView ? "15%" : 0), top: 0},
+	    	layoutData: {left: (labelView ? 100 : 0), width: 75, top: 0},
 	        text: "<"
 		}).on("select", function() {
         	handler(valueView, -1);
@@ -45,7 +45,7 @@ function create(label, value, edit, layoutData, handler) {
 		compositeValueView.appendTo(composite);
 	    
 	    var nextBtn = tabris.create("Button", {
-	    	layoutData: {left: [compositeValueView,0], top: 0},
+	    	layoutData: {left: [compositeValueView,0], width: 75, top: 0},
 	        text: ">"
 		}).on("select", function() {
         	handler(valueView, 1);

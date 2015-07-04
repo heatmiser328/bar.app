@@ -31,7 +31,7 @@ function create(dieopts, layout, handler) {
 	        image: 'images/dice/' + die.image() + '.png'
 		})
         .on('tap', function(widget, opt) {
-        	die.increment();
+        	die.increment(true);
         	die.view.set('image', 'images/dice/' + die.image() + '.png');
             handler(dice.dice());
         })
