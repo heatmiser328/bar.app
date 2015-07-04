@@ -1,28 +1,50 @@
 var Spinner = require('../widgets/spinner.js');
 var Dice = require('../widgets/dice.js');
 var Melee = require('../core/melee.js');
+var config = require('../views/config.js');
+var _ = require('lodash');
 var log = require('../core/log.js');
 
-function increment(v, i) {
-	v += i;
-    if (v < 1) {
-    	v = 1;
-    }
-    return v;
-}
+var odds = Melee.odds[2];
+var attack = {
+	nationality: Melee.nationalities[0],
+    morale: 0,
+    leader: 0,
+    tacticalldr: false,
+    modifier: 0
+};
+var defend = {
+	nationality: Melee.nationalities[1],
+    morale: 0,
+    leader: 0,
+    tacticalldr: false,
+    modifier: 0
+};
 
-var firetype = Fire.types[0];
-var firesps = Fire.sps[0];
-var firerange = Fire.ranges[0];
-var modifier = 0;
 
 function create(battle) {
+	function increment(v, i, min, max) {
+		v += i;
+	    if (v < min) {
+	    	v = min;
+	    }
+	    if (v > max) {
+	    	v = max;
+	    }
+	    return v;
+	}
+
     function updateResults(dice) {
     	dice = dice || diceView.dice();
-    	var result = Fire.resolve(dice[0].value, dice[1].value, firetype, firesps, firerange, modifier);
+    	var result = Melee.resolve(dice[0].value, dice[1].value, odds,
+        							attack.morale, attack.nationality, attack.leader, attack.tacticalldr, attack.modifier,
+        							defend.morale, defend.nationality, defend.leader, defend.tacticalldr, defend.modifier);
         log.debug(result);
         textResult.set('text', result);
     }
+    
+    attack.modifiers = [{name: 'Tactical Leader', value: 0}, {name: 'Diversion', value: 0}].concat(battle.modifiers.melee.attack);
+    defend.modifiers = [{name: 'Tactical Leader', value: 0}].concat(battle.modifiers.melee.defend);
     
 	var composite = tabris.create("Composite", {
     	//background: "red",
@@ -30,109 +52,239 @@ function create(battle) {
         highlightOnTouch: true
 	});
 
-	var compositeFire = tabris.create("Composite", {
-    	//background: "green",
-    	layoutData: {left: 0, top: 0, right: '45%'},
-        highlightOnTouch: true
-	});
-    
-	    var labelType = tabris.create("TextView", {
-	    	text: "Type",
-	    	layoutData: {left: 5, top: 2}
-		}).appendTo(compositeFire);
-		    var comboType = tabris.create("Picker", {
-		    	layoutData: {left: [labelType, 20], top: 0, right: 1},
-		        items: Fire.types,
-		        selection: firetype
-			}).on("change:selection", function(picker, item) {
-		    	firetype = item;
-                log.debug('Selected ' + firetype);
-                updateResults();
-			}).appendTo(compositeFire);    
-	    
-	    var labelSPs = tabris.create("TextView", {
-	    	text: "SPs",
-	    	layoutData: {left: 5, top: [comboType, 7]}
-		}).appendTo(compositeFire);
-		    var comboSPs = tabris.create("Picker", {
-		    	layoutData: {left: [labelSPs, 20], top: [comboType, 5], right: 1},
-		        items: Fire.sps,
-		        selection: firesps
-			}).on("change:selection", function(picker, item) {
-		    	firesps = item;
-                log.debug('Selected ' + firesps);
-                updateResults();
-			}).appendTo(compositeFire);    
-	    
-	    var labelRange = tabris.create("TextView", {
-	    	text: "Range",
-	    	layoutData: {left: 5, top: [comboSPs, 7]}
-		}).appendTo(compositeFire);
-		    var comboRange = tabris.create("Picker", {
-		    	layoutData: {left: [labelRange, 20], top: [comboSPs, 5], right: 1},
-		        items: Fire.ranges,
-		        selection: firerange
-			}).on("change:selection", function(picker, item) {
-		    	firerange = item;
-                log.debug('Selected ' + firerange);
-                updateResults();
-			}).appendTo(compositeFire);
-            
-	compositeFire.appendTo(composite);
-    
-	var compositeModifiers = tabris.create("Composite", {
-    	//background: "blue",
-    	layoutData: {left: [compositeFire,0], top: 0, right: 0, bottom: '15%'},
-        highlightOnTouch: true
-	});
-    	tabris.create("CollectionView", {
-        	layoutData: {left: 0, top: 0, right: 0, bottom: 0},
-            items: Fire.modifiers,
-            itemHeight: 35,
-            initializeCell: function(cell) {
-            	var toggleModifier = tabris.create("ToggleButton", {
-                	layoutData: {left: 0, top: 0, right: 0},
-                    text: "",
-                    selection: false
-				}).on("change:selection", function(button, selection) {
-                	var name = button.get('text');
-                	log.debug('Modifier ' + name + (selection ? '' : ' not') + ' selected');
-                    modifier += (selection ? 1 : -1) * Fire.modifier(name);
-                    updateResults();
-				}).appendTo(cell);
-                cell.on("change:item", function(widget, mod) {
-                    toggleModifier.set("text", mod.name);
-				});
-			}
-		}).appendTo(compositeModifiers);
-	compositeModifiers.appendTo(composite);
-    
     var diceView = Dice.create([
     	{num: 1, low: 0, high: 9, color: 'red'},
     	{num: 1, low: 0, high: 9, color: 'white'}
-    ], {left: 50, top: [compositeModifiers, 0]}, function(dice) {
-    	log.debug('Fire!');
+    ], {left: 50, top: 2}, function(dice) {
+    	log.debug('Melee!');
         updateResults(dice);
 	}).appendTo(composite);
-    
     /*var labelResult = tabris.create("TextView", {
     	text: "Result",
-    	layoutData: {left: 5, top: [comboRange, 25]}
+    	layoutData: {left: 5, top: [diceView, 25]}
 	}).appendTo(composite);*/
 	    var textResult = tabris.create("TextView", {
 	    	text: "",
-	    	layoutData: {left: [diceView, 20], top: [compositeModifiers, 15]},
+	    	layoutData: {left: [diceView, 20], top: 15},
 	        alignment: 'center',
 	        font: 'bold 24px'
 		}).appendTo(composite);
     
+    var labelOdds = tabris.create("TextView", {
+    	text: "Odds",
+    	layoutData: {left: 5, top: [diceView, 7]}
+	}).appendTo(composite);
+	    var comboOdds = tabris.create("Picker", {
+	    	layoutData: {left: [labelOdds, 20], top: [diceView, 5], right: '50%'},
+	        items: Melee.odds,
+	        selection: odds
+		}).on("change:selection", function(picker, item) {
+	    	odds = item;
+            log.debug('Odds Selected ' + odds);
+            updateResults();
+		}).appendTo(composite);    
+    
+    /*
+	var compositeAttack = tabris.create("Composite", {
+    	//background: "green",
+    	layoutData: {left: 0, top: [comboOdds,5], right: '51%', bottom: 0},
+        highlightOnTouch: true
+	});
+	    var labelAttack = tabris.create("TextView", {
+	    	text: "Attack",
+	    	layoutData: {centerX: 0, top: 0},
+	        font: 'bold 20px'
+		}).appendTo(compositeAttack);
+    
+	    var labelAttackNationality = tabris.create("TextView", {
+	    	text: "Nationality",
+	    	layoutData: {left: config.PAGE_MARGIN, top: [labelAttack,11]}
+		}).appendTo(compositeAttack);
+		    var comboAttackNationality = tabris.create("Picker", {
+		    	layoutData: {left: [labelAttackNationality, 20], height: 35, top: [labelAttack,5], right: 1},
+		        items: Melee.nationalities,
+		        selection: attack.nationality
+			}).on("change:selection", function(picker, item) {
+		    	attack.nationality = item;
+                log.debug('Selected ' + attack.nationality);
+                updateResults();
+			}).appendTo(compositeAttack);   
+             
+	    var spinAttackMorale = Spinner.create('Morale', attack.morale, true, {left: 0, right: [0,3], top: [comboAttackNationality,5]}, function(valueView, incr) {
+	    	attack.morale = increment(attack.morale, incr, -5, 5);
+	    	valueView.set("text", attack.morale);
+		}).appendTo(compositeAttack);
+             
+	    var spinAttackLeader = Spinner.create('Leader', attack.leader, true, {left: 0, right: [0,3], top: [spinAttackMorale,5]}, function(valueView, incr) {
+	    	attack.leader = increment(attack.leader, incr, -5, 5);
+	    	valueView.set("text", attack.leader);
+		}).appendTo(compositeAttack);
+        
+        var scrollAttackModifiers = tabris.create("ScrollView", {
+        	direction: 'vertical',
+            //background: "red",
+        	layoutData: {left: 0, top: [spinAttackLeader, 5], right: 0, bottom: 0}
+		});
+        	var attackbtn;
+        	_.each(attack.modifiers, function(modifier, i) {
+                attackbtn = tabris.create("ToggleButton", {
+                	layoutData: {left: 0, top: i == 0 ? 0 : [attackbtn,0], right: 0},
+                    text: modifier.name,
+                    selection: false
+				}).on("change:selection", function(button, selection) {
+                	log.debug('Attack Modifier ' + modifier.name + (selection ? '' : ' not') + ' selected');
+                    if (modifier.name == 'Tactical Leader') {
+                    	attack.tacticalldr = (selection) ? true : false;
+                        log.debug('Attack Tactical Leader ' + attack.tacticalldr);
+                    }
+                    else {
+                    	attack.modifier += (selection ? 1 : -1) * modifier.value;
+                    }
+                	log.debug('Attack Modifier ' + attack.modifier);
+                    updateResults();
+				}).appendTo(scrollAttackModifiers);
+            });
+		scrollAttackModifiers.appendTo(compositeAttack);
+	compositeAttack.appendTo(composite);
+    
+	var compositeDefend = tabris.create("Composite", {
+    	//background: "green",
+    	layoutData: {left: [compositeAttack,5], top: [comboOdds,5], right: 0, bottom: 0},
+        highlightOnTouch: true
+	});
+	    var labelDefend = tabris.create("TextView", {
+	    	text: "Defend",
+	    	layoutData: {centerX: 0, top: 0},
+	        font: 'bold 20px'
+		}).appendTo(compositeDefend);
+    
+	    var labelDefendNationality = tabris.create("TextView", {
+	    	text: "Nationality",
+	    	layoutData: {left: config.PAGE_MARGIN, top: [labelDefend,11]}
+		}).appendTo(compositeDefend);
+		    var comboDefendNationality = tabris.create("Picker", {
+		    	layoutData: {left: [labelDefendNationality, 20], height: 35, top: [labelDefend,5], right: 1},
+		        items: Melee.nationalities,
+		        selection: defend.nationality
+			}).on("change:selection", function(picker, item) {
+		    	defend.nationality = item;
+                log.debug('Selected ' + defend.nationality);
+                updateResults();
+			}).appendTo(compositeDefend);   
+             
+	    var spinDefendMorale = Spinner.create('Morale', defend.morale, true, {left: 0, right: [0,3], top: [comboDefendNationality,5]}, function(valueView, incr) {
+	    	defend.morale = increment(defend.morale, incr, -5, 5);
+	    	valueView.set("text", defend.morale);
+		}).appendTo(compositeDefend);
+             
+	    var spinDefendLeader = Spinner.create('Leader', defend.leader, true, {left: 0, right: [0,3], top: [spinDefendMorale,5]}, function(valueView, incr) {
+	    	defend.leader = increment(defend.leader, incr, -5, 5);
+	    	valueView.set("text", defend.leader);
+		}).appendTo(compositeDefend);
+        
+        var scrollDefendModifiers = tabris.create("ScrollView", {
+        	direction: 'vertical',
+            //background: "red",
+        	layoutData: {left: 0, top: [spinDefendLeader, 5], right: 0, bottom: 0}
+		});
+        	var defendbtn;
+        	_.each(defend.modifiers, function(modifier, i) {
+                defendbtn = tabris.create("ToggleButton", {
+                	layoutData: {left: 0, top: i == 0 ? 0 : [defendbtn,0], right: 0},
+                    text: modifier.name,
+                    selection: false
+				}).on("change:selection", function(button, selection) {
+                	log.debug('Modifier ' + modifier.name + (selection ? '' : ' not') + ' selected');
+                    if (modifier.name == 'Tactical Leader') {
+                    	defend.tacticalldr = (selection) ? true : false;
+                        log.debug('Defend Tactical Leader ' + defend.tacticalldr);
+                    }
+                    else {
+                    	defend.modifier += (selection ? 1 : -1) * modifier.value;
+                    }
+                	log.debug('Defend Modifier ' + defend.modifier);
+                    updateResults();
+				}).appendTo(scrollDefendModifiers);
+            });
+		scrollDefendModifiers.appendTo(compositeDefend);
+	compositeDefend.appendTo(composite);
+    */
+    var detailAttack = createDetail('Attack', {left: 0, top: [comboOdds,5], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
+    createDetail('Defend', {left: [detailAttack,5], top: [comboOdds,5], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
+    
 	return composite;
+}
+
+function createDetail(label, layout, model, updateResults) {
+	var compositeDetail = tabris.create("Composite", {
+    	//background: "green",
+    	layoutData: layout,
+        highlightOnTouch: true
+	});
+	    var labelDetail = tabris.create("TextView", {
+	    	text: label,
+	    	layoutData: {centerX: 0, top: 0},
+	        font: 'bold 20px'
+		}).appendTo(compositeDetail);
+    
+	    var labelDetailNationality = tabris.create("TextView", {
+	    	text: "Nationality",
+	    	layoutData: {left: config.PAGE_MARGIN, top: [labelDetail,11]}
+		}).appendTo(compositeDetail);
+		    var comboDetailNationality = tabris.create("Picker", {
+		    	layoutData: {left: [labelDetailNationality, 20], height: 35, top: [labelDetail,5], right: 1},
+		        items: Melee.nationalities,
+		        selection: model.nationality
+			}).on("change:selection", function(picker, item) {
+		    	model.nationality = item;
+                log.debug('Selected ' + model.nationality);
+                compositeDetail.set('background', item == 'British' ? 'red' : 'blue');
+                updateResults();
+			}).appendTo(compositeDetail);   
+             
+	    var spinDetailMorale = Spinner.create('Morale', model.morale, true, {left: 0, right: [0,3], top: [comboDetailNationality,5]}, function(valueView, incr) {
+	    	model.morale = increment(model.morale, incr, -5, 5);
+	    	valueView.set("text", model.morale);
+		}).appendTo(compositeDetail);
+             
+	    var spinDetailLeader = Spinner.create('Leader', model.leader, true, {left: 0, right: [0,3], top: [spinDetailMorale,5]}, function(valueView, incr) {
+	    	model.leader = increment(model.leader, incr, -5, 5);
+	    	valueView.set("text", model.leader);
+		}).appendTo(compositeDetail);
+        
+        var scrollDetailModifiers = tabris.create("ScrollView", {
+        	direction: 'vertical',
+            //background: "red",
+        	layoutData: {left: 0, top: [spinDetailLeader, 5], right: 0, bottom: 0}
+		});
+        	var detailbtn;
+        	_.each(model.modifiers, function(modifier, i) {
+                detailbtn = tabris.create("ToggleButton", {
+                	layoutData: {left: 0, top: i == 0 ? 0 : [detailbtn,0], right: 0},
+                    text: modifier.name,
+                    selection: false
+				}).on("change:selection", function(button, selection) {
+                	log.debug(label + ' Modifier ' + modifier.name + (selection ? '' : ' not') + ' selected');
+                    if (modifier.name == 'Tactical Leader') {
+                    	model.tacticalldr = (selection) ? true : false;
+                        log.debug(label + ' Tactical Leader ' + model.tacticalldr);
+                    }
+                    else {
+                    	model.modifier += (selection ? 1 : -1) * modifier.value;
+                    }
+                	log.debug(label + ' Modifier ' + model.modifier);
+                    updateResults();
+				}).appendTo(scrollDetailModifiers);
+            });
+		scrollDetailModifiers.appendTo(compositeDetail);
+        
+	return compositeDetail;
 }
 
 
 module.exports = {
 	create: function(battle) {
-    	log.debug('Creating Morale for ' + battle.name);
+    	log.debug('Creating Melee for ' + battle.name);
     	return create(battle);
     }
 };

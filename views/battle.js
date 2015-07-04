@@ -6,7 +6,7 @@ var Spinner = require('../widgets/spinner.js');
 var Army = require('../views/army.js');
 var Initiative = require('../views/initiative.js');
 var Fire = require('../views/fire.js');
-//var Melee = require('../views/melee.js');
+var Melee = require('../views/melee.js');
 var Morale = require('../views/morale.js');
 var Victory = require('../views/victory.js');
 var log = require('../core/log.js');
@@ -91,14 +91,13 @@ function show(battle, current) {
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
     
-    //tabs.push(createTab('Melee', 'images/melee.png', Melee.create(battle)).appendTo(folder));
-    
     tabs.push(createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder));
     tabs.push(createTab('Fire', 'images/fire.png', Fire.create(battle)).appendTo(folder));
-    tabs.push(createTab('Melee', 'images/melee.png'));
+    tabs.push(createTab('Melee', 'images/melee.png', Melee.create(battle)).appendTo(folder));
     tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));
     tabs.push(createTab('Army', 'images/army.png', Army.create(battle)).appendTo(folder));
     tabs.push(createTab('Victory', 'images/victory.png', Victory.create(battle)).appendTo(folder));
+    
     folder.appendTo(page);
     
     page.open();
