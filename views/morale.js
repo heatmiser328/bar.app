@@ -6,13 +6,13 @@ var Current = require('../core/current.js');
 var config = require('../views/config.js');
 var log = require('../core/log.js');
 
-function increment(v, i) {
+function increment(v, i, min, max) {
 	v += i;
-    if (v < -5) {
-    	v = -5;
+    if (v < min) {
+    	v = min;
     }
-    else if (v > 5) {
-    	v = 5;
+    else if (v > max) {
+    	v = max;
     }
     return v;
 }
@@ -45,8 +45,20 @@ function create(battle) {
         highlightOnTouch: true
 	});
 
-    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: 0}, function(valueView, incr) {
-    	unit = increment(unit, incr);
+    var diceView = Dice.create([
+    	{num: 1, low: 0, high: 9, color: 'white'}
+    ], {left: 50, top: 2}, function(dice) {
+    	checkMorale(dice);
+	}).appendTo(composite);
+	    var resultView = tabris.create("TextView", {
+	    	text: "",
+	    	layoutData: {left: [diceView, 20], top: 15},
+	        font: 'bold 24px'
+		}).appendTo(composite);
+ 
+    
+    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [diceView,10]}, function(valueView, incr) {
+    	unit = increment(unit, incr, -5, 5);
     	valueView.set("text", unit);
 	}).appendTo(composite);
     
@@ -87,22 +99,61 @@ function create(battle) {
 		}).appendTo(composite);
     
     var spinLeader = Spinner.create('Leader', leader, true, {left: 0, right: [0,3], top: [radioFrench,10]}, function(valueView, incr) {
-    	leader = increment(leader, incr);
+    	leader = increment(leader, incr, -5, 5);
     	valueView.set("text", leader);
 	}).appendTo(composite);
     
-    var diceView = Dice.create([
-    	{num: 1, low: 0, high: 9, color: 'white'}
-    ], {left: 50, top: [spinLeader, 10]}, function(dice) {
-    	checkMorale(dice);
-	}).appendTo(composite);
+    var armyMoraleView = createArmyMorale(battle, {centerX: 0, top: [spinLeader, 15]});
+    armyMoraleView.appendTo(composite);
+    composite.reset = armyMoraleView.reset;
     
-    var resultView = tabris.create("TextView", {
-    	text: "",
-    	layoutData: {left: [diceView, 20], top: [spinLeader, 25]},
-        font: 'bold 24px'
-	}).appendTo(composite);
- 
+	return composite;
+}
+
+
+function createArmyMorale(battle, layout) {
+	var maxMorale = ArmyMorale.maxMorale(battle.moraleLevels);
+	var current = Current.get(battle);
+	var composite = tabris.create("Composite", {
+    	id: 'armyView',
+    	//background: "white",
+    	layoutData: layout,
+        highlightOnTouch: true
+	});
+
+	    var labelView = tabris.create("TextView", {
+	    	text: "Morale Levels",
+	    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
+		}).appendTo(composite);
+	    
+	    var spinBritish = Spinner.create('British', current.britishMorale, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
+	    	current = Current.get(battle);
+	    	current.britishMorale = increment(current.britishMorale, incr, 1, maxMorale);
+	    	valueView.set("text", current.britishMorale);
+	        Current.save(current);
+		}).appendTo(composite);
+	    
+	    var spinAmerican = Spinner.create('American', current.americanMorale, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
+	    	current = Current.get(battle);
+	    	current.americanMorale = increment(current.americanMorale, incr, 1, maxMorale);
+	    	valueView.set("text", current.americanMorale);
+	        Current.save(current);
+		}).appendTo(composite);
+	    
+	    var spinFrench = Spinner.create('French', current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
+	    	current = Current.get(battle);
+	    	current.frenchMorale = increment(current.frenchMorale, incr, 1, maxMorale);
+	    	valueView.set("text", current.frenchMorale);
+	        Current.save(current);
+		}).appendTo(composite);
+    
+    composite.reset = function() {
+    	current = Current.get(battle);
+        spinBritish.setValue(current.britishMorale);
+        spinAmerican.setValue(current.americanMorale);
+        spinFrench.setValue(current.frenchMorale);
+    }
+    
 	return composite;
 }
 

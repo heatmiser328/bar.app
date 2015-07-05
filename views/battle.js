@@ -1,9 +1,6 @@
 var Battles = require('../core/battles.js');
-var Phases = require('../core/phases.js');
 var Current = require('../core/current.js');
-var config = require('../views/config.js');
-var Spinner = require('../widgets/spinner.js');
-var Army = require('../views/army.js');
+var Turn = require('../views/turn.js');
 var Initiative = require('../views/initiative.js');
 var Fire = require('../views/fire.js');
 var Melee = require('../views/melee.js');
@@ -30,64 +27,17 @@ function createTab(title, image, tabcontent) {
 function show(battle, current) {
 	var tabs = [];
 	var page = tabris.create("Page", {
-    	title: battle.name
+    	title: battle.name,
+        //background: 'black',
+        //textColor: 'white'
 	});
     
-    var composite = tabris.create("Composite", {
-    	background: "white",
-        highlightOnTouch: true
-	});
-    
-    // header
-    var imageView = tabris.create("ImageView", {
-    	layoutData: {left: config.PAGE_MARGIN, top: config.PAGE_MARGIN/2, width: 96, height: 144},
-        image: 'images/' + battle.image
-	}).appendTo(composite);
-    
-    var nameView = tabris.create("TextView", {
-    	text: battle.desc,
-    	layoutData: {left: [imageView, config.PAGE_MARGIN], top: config.PAGE_MARGIN},
-        background: "rgba(0, 0, 0, 0.1)"
-	}).appendTo(composite);
-    
-    tabris.create("Action", {
-    	image: "images/refresh.png"
-	}).on("select", function() {
-    	log.debug('Reset ' + battle.name);
-    	Current.reset(battle);
-    	spinTurn.setValue(Current.turn());
-    	spinPhase.setValue(Current.phase());
-        tabs.forEach(function(tab) {
-        	if (tab.reset && typeof tab.reset == 'function') {
-            	tab.reset();
-            }
-        });
-	});
-    
-    // current
-    var compositeTurn = tabris.create("Composite", {
-    	layoutData: {left: [imageView, config.PAGE_MARGIN], top: [nameView, 10]},
-    	background: "white",
-        highlightOnTouch: true
-    });
-    // date/time
-    var spinTurn = Spinner.create(null, Current.turn(), false, {left: 0, right: [0,3], top: 0}, function(valueView, incr) {
-		var turn = (incr > 0) ? Current.nextTurn() : Current.prevTurn();
-    	valueView.set("text", turn);
-	}).appendTo(compositeTurn);
-    // phase
-    var spinPhase = Spinner.create(null, Current.phase(), false, {left: 0, right: [0,3], top: [spinTurn,0]}, function(valueView, incr) {
-		var phase = (incr > 0) ? Current.nextPhase() : Current.prevPhase();
-    	valueView.set("text", phase);
-        spinTurn.setValue(Current.turn());
-	}).appendTo(compositeTurn);
-    compositeTurn.appendTo(composite);
-    
-    composite.appendTo(page);
+    var turnView = Turn.create(battle);
+    turnView.appendTo(page);
     
     // tabs
     var folder = tabris.create("TabFolder", {
-		layoutData: {left: 0, top: [composite, 10], right: 0, bottom: 0},
+		layoutData: {left: 0, top: [turnView, 10], right: 0, bottom: 0},
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
     
@@ -95,7 +45,6 @@ function show(battle, current) {
     tabs.push(createTab('Fire', 'images/fire.png', Fire.create(battle)).appendTo(folder));
     tabs.push(createTab('Melee', 'images/melee.png', Melee.create(battle)).appendTo(folder));
     tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));
-    tabs.push(createTab('Army', 'images/army.png', Army.create(battle)).appendTo(folder));
     tabs.push(createTab('Victory', 'images/victory.png', Victory.create(battle)).appendTo(folder));
     
     folder.appendTo(page);

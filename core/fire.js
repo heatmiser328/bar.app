@@ -1,61 +1,6 @@
 var types = ['Rifle v Other','Rifle v Arty','Arty v All'];
 var sps = ['1','2','3-5','6-9','10+'];
 var ranges = ['Adjacent', '2-3 hexes'];
-var modifiers = [
-	{
-    	name: 'Forest / Lt Forest',
-        value: -1
-    },
-	{
-    	name: 'Orchard',
-        value: -1
-    },
-	{
-    	name: 'Blackjack',
-        value: -1
-    },
-	{
-    	name: 'Lt Infantry',
-        value: -1
-    },
-	{
-    	name: 'Arty / Dragoons',
-        value: 1
-    },
-	{
-    	name: 'First Volley',
-        value: 1
-    },
-	{
-    	name: "Ferguson's Rifles",
-        value: 1
-    },
-	{
-    	name: 'Fieldworks',
-        value: -1
-    },
-	{
-    	name: 'Meeting House',
-        value: -2
-    },
-	{
-    	name: 'Guilford CH',
-        value: -1
-    },
-	{
-    	name: 'McCuiston PH',
-        value: -1
-    },
-	{
-    	name: 'Wantoot PH',
-        value: -2
-    },
-	{
-    	name: 'Santee River',
-        value: 1
-    }
-];
-
 var tohit = {
 	'Adjacent': {
     	'1': 7,
@@ -146,15 +91,6 @@ module.exports = {
 	types: types,
     sps: sps,
     ranges: ranges,
-    modifiers: modifiers,
-    modifier: function(name) {
-    	for (var i=0;i<modifiers.length; i++) {
-        	if (name == modifiers[i].name) {
-            	return modifiers[i].value;
-            }
-        }
-    	return 0;
-    },
     resolve: function(hitdie, damagedie, type, sps, range, drm) {
     	if ((hitdie+drm) >= tohit[range][sps]) {
         	var rt = results[type];

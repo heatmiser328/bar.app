@@ -25,9 +25,25 @@ function create(battle) {
         highlightOnTouch: true
 	});
 
+    var diceView = Dice.create([
+    	{num: 1, low: 0, high: 9, color: 'red'},
+    	{num: 1, low: 0, high: 9, color: 'blue'}
+    ], {left: 50, top: 2}, function(dice) {
+    	log.debug('Determine initiative');
+        var result = Initiative.calc(battle, dice[0].value, spinBritish.getValue(), dice[1].value, spinAmerican.getValue());
+        resultView.set('text', result)
+	}).appendTo(composite);
+    
+    var resultView = tabris.create("TextView", {
+    	text: "",
+    	layoutData: {left: [diceView, 20], top: 15},
+        font: 'bold 24px'
+	}).appendTo(composite);
+ 
+    
     var labelView = tabris.create("TextView", {
     	text: "Momentum",
-    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
+    	layoutData: {centerX: 20, top: [diceView, 10]}
 	}).appendTo(composite);
     
     var spinBritish = Spinner.create('British', british, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
@@ -40,21 +56,6 @@ function create(battle) {
     	valueView.set("text", american);
 	}).appendTo(composite);
     
-    var diceView = Dice.create([
-    	{num: 1, low: 0, high: 9, color: 'red'},
-    	{num: 1, low: 0, high: 9, color: 'blue'}
-    ], {left: 50, top: [spinAmerican, 10]}, function(dice) {
-    	log.debug('Determine initiative');
-        var result = Initiative.calc(battle, dice[0].value, spinBritish.getValue(), dice[1].value, spinAmerican.getValue());
-        resultView.set('text', result)
-	}).appendTo(composite);
-    
-    var resultView = tabris.create("TextView", {
-    	text: "",
-    	layoutData: {left: [diceView, 20], top: [spinAmerican, 25]},
-        font: 'bold 24px'
-	}).appendTo(composite);
- 
 	return composite;
 }
 

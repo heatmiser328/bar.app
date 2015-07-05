@@ -1,4 +1,5 @@
 var phases = [
+	"Initiative", 
 	"1. Movement", 
 	"1. Rally", 
 	"1. Def Arty Fire", 

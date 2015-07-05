@@ -72,7 +72,7 @@ function create(battle) {
     
     var labelOdds = tabris.create("TextView", {
     	text: "Odds",
-    	layoutData: {left: 5, top: [diceView, 7]}
+    	layoutData: {left: '45%', top: [diceView, 7]}
 	}).appendTo(composite);
 	    var comboOdds = tabris.create("Picker", {
 	    	layoutData: {left: [labelOdds, 20], top: [diceView, 5], right: '50%'},
@@ -84,131 +84,6 @@ function create(battle) {
             updateResults();
 		}).appendTo(composite);    
     
-    /*
-	var compositeAttack = tabris.create("Composite", {
-    	//background: "green",
-    	layoutData: {left: 0, top: [comboOdds,5], right: '51%', bottom: 0},
-        highlightOnTouch: true
-	});
-	    var labelAttack = tabris.create("TextView", {
-	    	text: "Attack",
-	    	layoutData: {centerX: 0, top: 0},
-	        font: 'bold 20px'
-		}).appendTo(compositeAttack);
-    
-	    var labelAttackNationality = tabris.create("TextView", {
-	    	text: "Nationality",
-	    	layoutData: {left: config.PAGE_MARGIN, top: [labelAttack,11]}
-		}).appendTo(compositeAttack);
-		    var comboAttackNationality = tabris.create("Picker", {
-		    	layoutData: {left: [labelAttackNationality, 20], height: 35, top: [labelAttack,5], right: 1},
-		        items: Melee.nationalities,
-		        selection: attack.nationality
-			}).on("change:selection", function(picker, item) {
-		    	attack.nationality = item;
-                log.debug('Selected ' + attack.nationality);
-                updateResults();
-			}).appendTo(compositeAttack);   
-             
-	    var spinAttackMorale = Spinner.create('Morale', attack.morale, true, {left: 0, right: [0,3], top: [comboAttackNationality,5]}, function(valueView, incr) {
-	    	attack.morale = increment(attack.morale, incr, -5, 5);
-	    	valueView.set("text", attack.morale);
-		}).appendTo(compositeAttack);
-             
-	    var spinAttackLeader = Spinner.create('Leader', attack.leader, true, {left: 0, right: [0,3], top: [spinAttackMorale,5]}, function(valueView, incr) {
-	    	attack.leader = increment(attack.leader, incr, -5, 5);
-	    	valueView.set("text", attack.leader);
-		}).appendTo(compositeAttack);
-        
-        var scrollAttackModifiers = tabris.create("ScrollView", {
-        	direction: 'vertical',
-            //background: "red",
-        	layoutData: {left: 0, top: [spinAttackLeader, 5], right: 0, bottom: 0}
-		});
-        	var attackbtn;
-        	_.each(attack.modifiers, function(modifier, i) {
-                attackbtn = tabris.create("ToggleButton", {
-                	layoutData: {left: 0, top: i == 0 ? 0 : [attackbtn,0], right: 0},
-                    text: modifier.name,
-                    selection: false
-				}).on("change:selection", function(button, selection) {
-                	log.debug('Attack Modifier ' + modifier.name + (selection ? '' : ' not') + ' selected');
-                    if (modifier.name == 'Tactical Leader') {
-                    	attack.tacticalldr = (selection) ? true : false;
-                        log.debug('Attack Tactical Leader ' + attack.tacticalldr);
-                    }
-                    else {
-                    	attack.modifier += (selection ? 1 : -1) * modifier.value;
-                    }
-                	log.debug('Attack Modifier ' + attack.modifier);
-                    updateResults();
-				}).appendTo(scrollAttackModifiers);
-            });
-		scrollAttackModifiers.appendTo(compositeAttack);
-	compositeAttack.appendTo(composite);
-    
-	var compositeDefend = tabris.create("Composite", {
-    	//background: "green",
-    	layoutData: {left: [compositeAttack,5], top: [comboOdds,5], right: 0, bottom: 0},
-        highlightOnTouch: true
-	});
-	    var labelDefend = tabris.create("TextView", {
-	    	text: "Defend",
-	    	layoutData: {centerX: 0, top: 0},
-	        font: 'bold 20px'
-		}).appendTo(compositeDefend);
-    
-	    var labelDefendNationality = tabris.create("TextView", {
-	    	text: "Nationality",
-	    	layoutData: {left: config.PAGE_MARGIN, top: [labelDefend,11]}
-		}).appendTo(compositeDefend);
-		    var comboDefendNationality = tabris.create("Picker", {
-		    	layoutData: {left: [labelDefendNationality, 20], height: 35, top: [labelDefend,5], right: 1},
-		        items: Melee.nationalities,
-		        selection: defend.nationality
-			}).on("change:selection", function(picker, item) {
-		    	defend.nationality = item;
-                log.debug('Selected ' + defend.nationality);
-                updateResults();
-			}).appendTo(compositeDefend);   
-             
-	    var spinDefendMorale = Spinner.create('Morale', defend.morale, true, {left: 0, right: [0,3], top: [comboDefendNationality,5]}, function(valueView, incr) {
-	    	defend.morale = increment(defend.morale, incr, -5, 5);
-	    	valueView.set("text", defend.morale);
-		}).appendTo(compositeDefend);
-             
-	    var spinDefendLeader = Spinner.create('Leader', defend.leader, true, {left: 0, right: [0,3], top: [spinDefendMorale,5]}, function(valueView, incr) {
-	    	defend.leader = increment(defend.leader, incr, -5, 5);
-	    	valueView.set("text", defend.leader);
-		}).appendTo(compositeDefend);
-        
-        var scrollDefendModifiers = tabris.create("ScrollView", {
-        	direction: 'vertical',
-            //background: "red",
-        	layoutData: {left: 0, top: [spinDefendLeader, 5], right: 0, bottom: 0}
-		});
-        	var defendbtn;
-        	_.each(defend.modifiers, function(modifier, i) {
-                defendbtn = tabris.create("ToggleButton", {
-                	layoutData: {left: 0, top: i == 0 ? 0 : [defendbtn,0], right: 0},
-                    text: modifier.name,
-                    selection: false
-				}).on("change:selection", function(button, selection) {
-                	log.debug('Modifier ' + modifier.name + (selection ? '' : ' not') + ' selected');
-                    if (modifier.name == 'Tactical Leader') {
-                    	defend.tacticalldr = (selection) ? true : false;
-                        log.debug('Defend Tactical Leader ' + defend.tacticalldr);
-                    }
-                    else {
-                    	defend.modifier += (selection ? 1 : -1) * modifier.value;
-                    }
-                	log.debug('Defend Modifier ' + defend.modifier);
-                    updateResults();
-				}).appendTo(scrollDefendModifiers);
-            });
-		scrollDefendModifiers.appendTo(compositeDefend);
-	compositeDefend.appendTo(composite);
-    */
     var detailAttack = createDetail('Attack', {left: 0, top: [comboOdds,5], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
     createDetail('Defend', {left: [detailAttack,5], top: [comboOdds,5], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
     
@@ -238,7 +113,7 @@ function createDetail(label, layout, model, updateResults) {
 			}).on("change:selection", function(picker, item) {
 		    	model.nationality = item;
                 log.debug('Selected ' + model.nationality);
-                compositeDetail.set('background', item == 'British' ? 'red' : 'blue');
+                //compositeDetail.set('background', item == 'British' ? 'red' : 'blue');
                 updateResults();
 			}).appendTo(compositeDetail);   
              
@@ -257,10 +132,10 @@ function createDetail(label, layout, model, updateResults) {
             //background: "red",
         	layoutData: {left: 0, top: [spinDetailLeader, 5], right: 0, bottom: 0}
 		});
-        	var detailbtn;
+        	var btn;
         	_.each(model.modifiers, function(modifier, i) {
-                detailbtn = tabris.create("ToggleButton", {
-                	layoutData: {left: 0, top: i == 0 ? 0 : [detailbtn,0], right: 0},
+                btn = tabris.create("CheckBox", {
+                	layoutData: {left: 25, height: 55, top: i == 0 ? 0 : [btn,0], right: 0},
                     text: modifier.name,
                     selection: false
 				}).on("change:selection", function(button, selection) {
