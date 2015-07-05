@@ -1,7 +1,8 @@
 var Spinner = require('../widgets/spinner.js');
 var Dice = require('../widgets/dice.js');
 var Melee = require('../core/melee.js');
-var config = require('../views/config.js');
+var increment = require('../core/increment.js');
+var config = require('../config.js');
 var _ = require('lodash');
 var log = require('../core/log.js');
 
@@ -23,17 +24,6 @@ var defend = {
 
 
 function create(battle) {
-	function increment(v, i, min, max) {
-		v += i;
-	    if (v < min) {
-	    	v = min;
-	    }
-	    if (v > max) {
-	    	v = max;
-	    }
-	    return v;
-	}
-
     function updateResults(dice) {
     	dice = dice || diceView.dice();
     	var result = Melee.resolve(dice[0].value, dice[1].value, odds,
@@ -47,8 +37,9 @@ function create(battle) {
     defend.modifiers = [{name: 'Tactical Leader', value: 0}].concat(battle.modifiers.melee.defend);
     
 	var composite = tabris.create("Composite", {
-    	//background: "red",
     	layoutData: {left: 0, top: 10, right: 0},
+        background: config.background,
+        textColor: config.textColor,
         highlightOnTouch: true
 	});
 
@@ -66,16 +57,22 @@ function create(battle) {
 	    var textResult = tabris.create("TextView", {
 	    	text: "",
 	    	layoutData: {left: [diceView, 20], top: 15},
+            background: config.background,
+            textColor: config.textColor,
 	        alignment: 'center',
 	        font: 'bold 24px'
 		}).appendTo(composite);
     
     var labelOdds = tabris.create("TextView", {
     	text: "Odds",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: {left: '45%', top: [diceView, 7]}
 	}).appendTo(composite);
 	    var comboOdds = tabris.create("Picker", {
 	    	layoutData: {left: [labelOdds, 20], top: [diceView, 5], right: '50%'},
+            background: config.background,
+            textColor: config.textColor,
 	        items: Melee.odds,
 	        selection: odds
 		}).on("change:selection", function(picker, item) {
@@ -92,22 +89,29 @@ function create(battle) {
 
 function createDetail(label, layout, model, updateResults) {
 	var compositeDetail = tabris.create("Composite", {
-    	//background: "green",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: layout,
         highlightOnTouch: true
 	});
 	    var labelDetail = tabris.create("TextView", {
 	    	text: label,
 	    	layoutData: {centerX: 0, top: 0},
+	        background: config.background,
+    	    textColor: config.textColor,
 	        font: 'bold 20px'
 		}).appendTo(compositeDetail);
     
 	    var labelDetailNationality = tabris.create("TextView", {
 	    	text: "Nationality",
+	        background: config.background,
+	        textColor: config.textColor,
 	    	layoutData: {left: config.PAGE_MARGIN, top: [labelDetail,11]}
 		}).appendTo(compositeDetail);
 		    var comboDetailNationality = tabris.create("Picker", {
 		    	layoutData: {left: [labelDetailNationality, 20], height: 35, top: [labelDetail,5], right: 1},
+		        background: config.background,
+		        textColor: config.textColor,
 		        items: Melee.nationalities,
 		        selection: model.nationality
 			}).on("change:selection", function(picker, item) {
@@ -129,13 +133,16 @@ function createDetail(label, layout, model, updateResults) {
         
         var scrollDetailModifiers = tabris.create("ScrollView", {
         	direction: 'vertical',
-            //background: "red",
+	        background: config.background,
+	        textColor: config.textColor,
         	layoutData: {left: 0, top: [spinDetailLeader, 5], right: 0, bottom: 0}
 		});
         	var btn;
         	_.each(model.modifiers, function(modifier, i) {
                 btn = tabris.create("CheckBox", {
                 	layoutData: {left: 25, height: 55, top: i == 0 ? 0 : [btn,0], right: 0},
+			        background: config.background,
+			        textColor: config.textColor,
                     text: modifier.name,
                     selection: false
 				}).on("change:selection", function(button, selection) {

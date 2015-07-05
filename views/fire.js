@@ -1,6 +1,7 @@
 var Dice = require('../widgets/dice.js');
 var Fire = require('../core/fire.js');
 var _ = require('lodash');
+var config = require('../config.js');
 var log = require('../core/log.js');
 
 var fire = {
@@ -21,6 +22,8 @@ function create(battle) {
 	var composite = tabris.create("Composite", {
     	//background: "red",
     	layoutData: {left: 0, top: 10, right: 0},
+        background: config.background,
+        textColor: config.textColor,
         highlightOnTouch: true
 	});
 
@@ -39,6 +42,8 @@ function create(battle) {
 	    var textResult = tabris.create("TextView", {
 	    	text: "",
 	    	layoutData: {left: [diceView, 20], top: 15},
+            background: config.background,
+            textColor: config.textColor,
 	        alignment: 'center',
 	        font: 'bold 24px'
 		}).appendTo(composite);
@@ -46,15 +51,21 @@ function create(battle) {
 	var compositeFire = tabris.create("Composite", {
     	//background: "green",
     	layoutData: {left: 0, top: [diceView, 10], right: '45%'},
+        background: config.background,
+        textColor: config.textColor,
         highlightOnTouch: true
 	});
     
 	    var labelType = tabris.create("TextView", {
 	    	text: "Type",
+            background: config.background,
+            textColor: config.textColor,
 	    	layoutData: {left: 5, top: 5}
 		}).appendTo(compositeFire);
 		    var comboType = tabris.create("Picker", {
 		    	layoutData: {left: [labelType, 20], height: 35, top: 0, right: '15%'},
+                background: config.background,
+                textColor: config.textColor,
 		        items: Fire.types,
 		        selection: fire.type
 			}).on("change:selection", function(picker, item) {
@@ -65,10 +76,14 @@ function create(battle) {
 	    
 	    var labelSPs = tabris.create("TextView", {
 	    	text: "SPs",
+            background: config.background,
+            textColor: config.textColor,
 	    	layoutData: {left: 5, top: [comboType, 12]}
 		}).appendTo(compositeFire);
 		    var comboSPs = tabris.create("Picker", {
 		    	layoutData: {left: [labelSPs, 20], height: 35, top: [comboType, 5], right: '15%'},
+                background: config.background,
+                textColor: config.textColor,
 		        items: Fire.sps,
 		        selection: fire.strength
 			}).on("change:selection", function(picker, item) {
@@ -79,10 +94,14 @@ function create(battle) {
 	    
 	    var labelRange = tabris.create("TextView", {
 	    	text: "Range",
+            background: config.background,
+            textColor: config.textColor,
 	    	layoutData: {left: 5, top: [comboSPs, 12]}
 		}).appendTo(compositeFire);
 		    var comboRange = tabris.create("Picker", {
 		    	layoutData: {left: [labelRange, 20], height: 35, top: [comboSPs, 5], right: '15%'},
+                background: config.background,
+                textColor: config.textColor,
 		        items: Fire.ranges,
 		        selection: fire.range
 			}).on("change:selection", function(picker, item) {
@@ -95,7 +114,8 @@ function create(battle) {
     
     var scrollModifiers = tabris.create("ScrollView", {
     	direction: 'vertical',
-        //background: "red",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: {left: [compositeFire,0], top: [diceView, 10], right: 0, bottom: 0},
         highlightOnTouch: true
 	});
@@ -103,6 +123,8 @@ function create(battle) {
     	_.each(battle.modifiers.fire, function(modifier, i) {
             btn = tabris.create("CheckBox", {
             	layoutData: {left: 15, height: 55, top: i == 0 ? 0 : [btn,0], right: 0},
+                background: config.background,
+                textColor: config.textColor,
                 text: modifier.name,
                 selection: false
 			}).on("change:selection", function(button, selection) {

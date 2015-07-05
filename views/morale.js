@@ -3,19 +3,9 @@ var Dice = require('../widgets/dice.js');
 var ArmyMorale = require('../core/armymorale.js');
 var Morale = require('../core/morale.js');
 var Current = require('../core/current.js');
-var config = require('../views/config.js');
+var increment = require('../core/increment.js');
+var config = require('../config.js');
 var log = require('../core/log.js');
-
-function increment(v, i, min, max) {
-	v += i;
-    if (v < min) {
-    	v = min;
-    }
-    else if (v > max) {
-    	v = max;
-    }
-    return v;
-}
 
 var unit = 0;
 var leader = 0;
@@ -40,7 +30,8 @@ function create(battle) {
 	}
 
 	var composite = tabris.create("Composite", {
-    	//background: "white",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: {centerX: 0, top: config.PAGE_MARGIN},
         highlightOnTouch: true
 	});
@@ -52,6 +43,8 @@ function create(battle) {
 	}).appendTo(composite);
 	    var resultView = tabris.create("TextView", {
 	    	text: "",
+	        background: config.background,
+	        textColor: config.textColor,
 	    	layoutData: {left: [diceView, 20], top: 15},
 	        font: 'bold 24px'
 		}).appendTo(composite);
@@ -64,11 +57,15 @@ function create(battle) {
     
     var labelArmy = tabris.create("TextView", {
     	text: "Army",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: {left: 15, top: [spinMorale, 10]}
 	}).appendTo(composite);
     	
         var radioBritish = tabris.create("RadioButton", {
         	layoutData: {left: [labelArmy, 40], top: [spinMorale, 10]},
+	        background: config.background,
+	        textColor: config.textColor,
             text: 'British',
             selection: true
 		}).on("change:selection", function(widget, selection) {
@@ -80,6 +77,8 @@ function create(battle) {
     
         var radioAmerican = tabris.create("RadioButton", {
         	layoutData: {left: [labelArmy, 40], top: [radioBritish, 10]},
+	        background: config.background,
+	        textColor: config.textColor,
             text: 'American'
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
@@ -90,6 +89,8 @@ function create(battle) {
     
         var radioFrench = tabris.create("RadioButton", {
         	layoutData: {left: [labelArmy, 40], top: [radioAmerican, 10]},
+	        background: config.background,
+	        textColor: config.textColor,
             text: 'French'
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
@@ -116,33 +117,35 @@ function createArmyMorale(battle, layout) {
 	var current = Current.get(battle);
 	var composite = tabris.create("Composite", {
     	id: 'armyView',
-    	//background: "white",
+        background: config.background,
+        textColor: config.textColor,
     	layoutData: layout,
         highlightOnTouch: true
 	});
-
 	    var labelView = tabris.create("TextView", {
 	    	text: "Morale Levels",
+	        background: config.background,
+	        textColor: config.textColor,
 	    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
 		}).appendTo(composite);
 	    
 	    var spinBritish = Spinner.create('British', current.britishMorale, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
-	    	current.britishMorale = increment(current.britishMorale, incr, 1, maxMorale);
+	    	current.britishMorale = increment(current.britishMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.britishMorale);
 	        Current.save(current);
 		}).appendTo(composite);
 	    
 	    var spinAmerican = Spinner.create('American', current.americanMorale, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
-	    	current.americanMorale = increment(current.americanMorale, incr, 1, maxMorale);
+	    	current.americanMorale = increment(current.americanMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.americanMorale);
 	        Current.save(current);
 		}).appendTo(composite);
 	    
 	    var spinFrench = Spinner.create('French', current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
-	    	current.frenchMorale = increment(current.frenchMorale, incr, 1, maxMorale);
+	    	current.frenchMorale = increment(current.frenchMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.frenchMorale);
 	        Current.save(current);
 		}).appendTo(composite);

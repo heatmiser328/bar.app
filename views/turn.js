@@ -1,46 +1,37 @@
 var Current = require('../core/current.js');
 var Phases = require('../core/phases.js');
 var Spinner = require('../widgets/spinner.js');
-var config = require('../views/config.js');
+var config = require('../config.js');
 var log = require('../core/log.js');
 
 function create(battle) {
     var composite = tabris.create("Composite", {
-    	//background: "white",
-        //textColor: 'white',
+        background: config.background,
+        textColor: config.textColor,
         highlightOnTouch: true
 	});
     
     // header
     var imageView = tabris.create("ImageView", {
     	layoutData: {left: config.PAGE_MARGIN, top: config.PAGE_MARGIN/2, width: 96, height: 144},
+        background: config.background,
+        textColor: config.textColor,
         image: 'images/' + battle.image
 	}).appendTo(composite);
     
     var nameView = tabris.create("TextView", {
     	text: battle.desc,
     	layoutData: {left: [imageView, config.PAGE_MARGIN], top: config.PAGE_MARGIN},
-        background: "rgba(0, 0, 0, 0.1)"
+        background: config.background,
+        textColor: config.textColor
+        //background: "rgba(0, 0, 0, 0.1)"
 	}).appendTo(composite);
-    
-    tabris.create("Action", {
-    	image: "images/refresh.png"
-	}).on("select", function() {
-    	log.debug('Reset ' + battle.name);
-    	Current.reset(battle);
-    	spinTurn.setValue(Current.turn());
-    	spinPhase.setValue(Current.phase());
-        tabs.forEach(function(tab) {
-        	if (tab.reset && typeof tab.reset == 'function') {
-            	tab.reset();
-            }
-        });
-	});
     
     // current
     var compositeTurn = tabris.create("Composite", {
     	layoutData: {left: [imageView, config.PAGE_MARGIN], top: [nameView, 10]},
-    	//background: "white",
+        background: config.background,
+        textColor: config.textColor,
         highlightOnTouch: true
     });
     // date/time
@@ -55,7 +46,12 @@ function create(battle) {
         spinTurn.setValue(Current.turn());
 	}).appendTo(compositeTurn);
     compositeTurn.appendTo(composite);
-
+    
+    composite.reset = function() {
+    	spinTurn.setValue(Current.turn());
+    	spinPhase.setValue(Current.phase());
+    }
+    
 	return composite;
 }
     

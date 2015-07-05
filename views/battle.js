@@ -6,16 +6,21 @@ var Fire = require('../views/fire.js');
 var Melee = require('../views/melee.js');
 var Morale = require('../views/morale.js');
 var Victory = require('../views/victory.js');
+var config = require('../config.js');
 var log = require('../core/log.js');
 
 function createTab(title, image, tabcontent) {
 	var tab = tabris.create("Tab", {
     	layoutData: {left: 0, right: 0, top: 0, bottom: 0},
     	title: title, // converted to upper-case on Android
+        background: config.background,
+        textColor: config.textColor,
         image: {src: image, scale: 2} // image only used by iOS
 	});
     tabcontent = tabcontent || tabris.create("TextView", {
     	layoutData: {centerX: 0, centerY: 0},
+        background: config.background,
+        textColor: config.textColor,
         text: "Content of Tab " + title
 	});
     tabcontent.appendTo(tab);
@@ -23,14 +28,29 @@ function createTab(title, image, tabcontent) {
     return tab;
 }
 
+var btnReset;
 
 function show(battle, current) {
 	var tabs = [];
 	var page = tabris.create("Page", {
     	title: battle.name,
-        //background: 'black',
-        //textColor: 'white'
+        background: config.background,
+        textColor: config.textColor
 	});
+    
+    btnReset = btnReset ||
+	    tabris.create("Action", {
+	    	image: "images/refresh.png"
+		}).on("select", function() {
+	    	log.debug('Reset ' + battle.name);
+	    	Current.reset(battle);
+	        turnView.reset();
+	        tabs.forEach(function(tab) {
+	        	if (tab.reset && typeof tab.reset == 'function') {
+	            	tab.reset();
+	            }
+	        });
+		});
     
     var turnView = Turn.create(battle);
     turnView.appendTo(page);
@@ -38,6 +58,8 @@ function show(battle, current) {
     // tabs
     var folder = tabris.create("TabFolder", {
 		layoutData: {left: 0, top: [turnView, 10], right: 0, bottom: 0},
+        background: config.background,
+        textColor: config.textColor,
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
     

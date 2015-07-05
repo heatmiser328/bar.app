@@ -1,7 +1,7 @@
-var config = require("./config.js");
-var moment = require("moment");
 var Battles = require("../core/battles.js");
-var Battle = require("./battle.js");
+var Battle = require("../views/battle.js");
+var moment = require("moment");
+var config = require("../config.js");
 var drawer;
 
 function createSelections() {
@@ -13,6 +13,8 @@ function createBattlesList(items) {
     	layoutData: {left: 0, right: 0, top: 0, bottom: 0},
 	        itemHeight: 72,
             items: items,
+            background: config.background,
+            textColor: config.textColor,
             initializeCell: function(cell) {
             	var imageView = tabris.create("ImageView", {
                 	layoutData: {left: config.PAGE_MARGIN, centerY: 0, width: 32, height: 48},
@@ -21,7 +23,8 @@ function createBattlesList(items) {
 				var titleTextView = tabris.create("TextView", {
                 	layoutData: {left: 64, right: config.PAGE_MARGIN, top: config.PAGE_MARGIN},
                     markupEnabled: true,
-                    textColor: "#4a4a4a"
+                    //textColor: "#4a4a4a"
+                    textColor: config.textColor
 				}).appendTo(cell);
                 var subtitleTextView = tabris.create("TextView", {
                 	layoutData: {left: 64, right: config.PAGE_MARGIN, top: [titleTextView, 4]},
