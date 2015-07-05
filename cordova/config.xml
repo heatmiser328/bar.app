@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.ica.lb" version="1.0.0">
-  <name>BAR</name>
+<widget id="com.ica.lb" version="1.0.1">
+  <name>BAR Assistant</name>
   <description>
    Battles of the American Revolution Assistant
   </description>
