@@ -6,6 +6,7 @@ var Fire = require('../views/fire.js');
 var Melee = require('../views/melee.js');
 var Morale = require('../views/morale.js');
 var Victory = require('../views/victory.js');
+var General = require('../views/general.js');
 var config = require('../config.js');
 var log = require('../core/log.js');
 
@@ -68,6 +69,7 @@ function show(battle, current) {
     tabs.push(createTab('Melee', 'images/melee.png', Melee.create(battle)).appendTo(folder));
     tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));
     tabs.push(createTab('Victory', 'images/victory.png', Victory.create(battle)).appendTo(folder));
+    tabs.push(createTab('General', 'images/dice.png', General.create(battle)).appendTo(folder));
     
     folder.appendTo(page);
     
