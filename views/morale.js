@@ -61,43 +61,74 @@ function create(battle) {
         textColor: config.textColor,
     	layoutData: {left: 15, top: [spinMorale, 10]}
 	}).appendTo(composite);
-    	
+    
+    	function select(army) {
+        	radioBritish.set('selection', army == 'British');
+            radioAmerican.set('selection', army == 'American');
+            radioFrench.set('selection', army == 'French');
+        }
+    
         var radioBritish = tabris.create("RadioButton", {
         	layoutData: {left: [labelArmy, 40], top: [spinMorale, 10]},
 	        background: config.background,
 	        textColor: config.textColor,
-            text: 'British',
+            //text: 'British',
             selection: true
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
             	army = 'British';
+                checkMorale(diceView.dice());
 			}
-            checkMorale(diceView.dice());
 		}).appendTo(composite);
+		    var imageBritish = tabris.create("ImageView", {
+		    	layoutData: {left: [radioBritish, 5], top: [spinMorale, 10]},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: 'images/british-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('British');
+			}).appendTo(composite);
+        	
     
         var radioAmerican = tabris.create("RadioButton", {
-        	layoutData: {left: [labelArmy, 40], top: [radioBritish, 10]},
+        	layoutData: {left: [imageBritish, 40], top: [spinMorale, 10]},
 	        background: config.background,
-	        textColor: config.textColor,
-            text: 'American'
+	        textColor: config.textColor
+            //,text: 'American'
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
             	army = 'American';
+                checkMorale(diceView.dice());
 			}
-            checkMorale(diceView.dice());
 		}).appendTo(composite);
+		    var imageAmerican = tabris.create("ImageView", {
+		    	layoutData: {left: [radioAmerican, 5], top: [spinMorale, 10]},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: 'images/american-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('American');
+			}).appendTo(composite);
     
         var radioFrench = tabris.create("RadioButton", {
-        	layoutData: {left: [labelArmy, 40], top: [radioAmerican, 10]},
+        	layoutData: {left: [imageAmerican, 40], top: [spinMorale, 10]},
 	        background: config.background,
-	        textColor: config.textColor,
-            text: 'French'
+	        textColor: config.textColor
+            //,text: 'French'
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
             	army = 'French';
+                checkMorale(diceView.dice());
 			}
-            checkMorale(diceView.dice());
 		}).appendTo(composite);
+		    tabris.create("ImageView", {
+		    	layoutData: {left: [radioFrench, 5], top: [spinMorale, 10]},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: 'images/french-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('French');
+			}).appendTo(composite);
     
     var spinLeader = Spinner.create('Leader', leader, true, {left: 0, right: [0,3], top: [radioFrench,10]}, function(valueView, incr) {
     	leader = increment(leader, incr, -5, 5);
@@ -129,21 +160,21 @@ function createArmyMorale(battle, layout) {
 	    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
 		}).appendTo(composite);
 	    
-	    var spinBritish = Spinner.create('British', current.britishMorale, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
+	    var spinBritish = Spinner.create({src: 'images/british-flag-sm.png'}, current.britishMorale, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
 	    	current.britishMorale = increment(current.britishMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.britishMorale);
 	        Current.save(current);
 		}).appendTo(composite);
 	    
-	    var spinAmerican = Spinner.create('American', current.americanMorale, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
+	    var spinAmerican = Spinner.create({src: 'images/american-flag-sm.png'}, current.americanMorale, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
 	    	current.americanMorale = increment(current.americanMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.americanMorale);
 	        Current.save(current);
 		}).appendTo(composite);
 	    
-	    var spinFrench = Spinner.create('French', current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
+	    var spinFrench = Spinner.create({src: 'images/french-flag-sm.png'}, current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
 	    	current.frenchMorale = increment(current.frenchMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.frenchMorale);

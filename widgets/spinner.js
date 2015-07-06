@@ -8,13 +8,23 @@ function create(label, value, edit, layoutData, handler) {
         textColor: config.textColor,
         highlightOnTouch: true
     });
-    	var labelView = label ? tabris.create("TextView", {
+    	var labelView;
+        if (label && typeof label == 'string') {
+        	labelView = tabris.create("TextView", {
 		    	text: label,
 		        background: config.background,
 		        textColor: config.textColor,
 	    		layoutData: {left: config.PAGE_MARGIN, centerY: 0},
-			}).appendTo(composite)
-            : null;
+			}).appendTo(composite);
+        }
+        else if (label && label.src) {
+		    labelView = tabris.create("ImageView", {
+	    		layoutData: {left: config.PAGE_MARGIN, centerY: 0},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: label.src
+			}).appendTo(composite);
+        }
     
 	    var prevBtn = tabris.create("Button", {
 	    	layoutData: {left: (labelView ? 100 : 0), width: 75, top: 0},

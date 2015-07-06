@@ -1,4 +1,4 @@
-# bar.app
+# bar.tabris
 BAR assistant using Tabrisjs
 
 
