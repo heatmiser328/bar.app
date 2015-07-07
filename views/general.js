@@ -7,7 +7,7 @@ function create() {
     	{num: 1, low: 0, high: 9, color: 'red'},
     	{num: 1, low: 0, high: 9, color: 'white'},
     	{num: 1, low: 0, high: 9, color: 'blue'}
-    ], {left: 50, top: 2}, function(dice) {
+    ], {left: 50, top: config.PAGE_MARGIN}, function(dice) {
     	log.debug('General dice roll');
 	});
     return diceView;
