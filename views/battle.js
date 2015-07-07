@@ -31,7 +31,7 @@ function createTab(title, image, tabcontent) {
 
 var btnReset;
 
-function show(battle, current) {
+function show(battle) {
 	var tabs = [];
 	var page = tabris.create("Page", {
     	title: battle.name,
@@ -82,6 +82,9 @@ module.exports = {
     	var battle = Battles.get(id);
     	log.debug('Showing ' + battle.name);
         var current = Current.get(battle);
-    	show(battle, current);
+        if (current.battle != battle.id) {
+        	Current.reset(battle);
+        }
+    	show(battle);
     }
 };
