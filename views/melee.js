@@ -67,12 +67,14 @@ function create(battle) {
     	text: "Odds",
         background: config.background,
         textColor: config.textColor,
-    	layoutData: {left: '45%', top: [diceView, 7]}
+        font: 'bold 24px',
+    	layoutData: {left: '40%', top: [diceView,10]}
 	}).appendTo(composite);
 	    var comboOdds = tabris.create("Picker", {
-	    	layoutData: {left: [labelOdds, 20], top: [diceView, 5], right: '50%'},
+	    	layoutData: {left: [labelOdds, 5], top: [diceView,14], right: '15%'},
             background: config.background,
             textColor: config.textColor,
+	        font: '20px',
 	        items: Melee.odds,
 	        selection: odds
 		}).on("change:selection", function(picker, item) {
@@ -81,8 +83,12 @@ function create(battle) {
             updateResults();
 		}).appendTo(composite);    
     
-    var detailAttack = createDetail('Attack', {left: 0, top: [comboOdds,5], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
-    createDetail('Defend', {left: [detailAttack,5], top: [comboOdds,5], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
+    var detailAttack = createDetail('Attack', {left: 0, top: [labelOdds,10], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
+	var compositeDivider = tabris.create("Composite", {
+    	layoutData: {left: [detailAttack,0], top: [labelOdds,10], width: 2, bottom: 0},
+        background: 'gray'
+	}).appendTo(composite);
+    createDetail('Defend', {left: [compositeDivider,0], top: [labelOdds,10], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
     
 	return composite;
 }
@@ -102,26 +108,77 @@ function createDetail(label, layout, model, updateResults) {
 	        font: 'bold 20px'
 		}).appendTo(compositeDetail);
     
-	    var labelDetailNationality = tabris.create("TextView", {
-	    	text: "Nationality",
+    	function select(nationality) {
+        	radioBritish.set('selection', nationality == 'British');
+            radioAmerican.set('selection', nationality == 'American');
+            radioFrench.set('selection', nationality == 'French');
+        }
+    
+        var radioBritish = tabris.create("RadioButton", {
+        	layoutData: {left: 2, top: [labelDetail, 10]},
 	        background: config.background,
 	        textColor: config.textColor,
-	    	layoutData: {left: config.PAGE_MARGIN, top: [labelDetail,11]}
+            //text: 'British',
+            selection: true
+		}).on("change:selection", function(widget, selection) {
+        	if (selection) {
+            	model.nationality = 'British';
+                updateResults();
+			}
 		}).appendTo(compositeDetail);
-		    var comboDetailNationality = tabris.create("Picker", {
-		    	layoutData: {left: [labelDetailNationality, 20], height: 35, top: [labelDetail,5], right: 1},
+		    var imageBritish = tabris.create("ImageView", {
+		    	layoutData: {left: [radioBritish, 5], top: [labelDetail, 10]},
 		        background: config.background,
 		        textColor: config.textColor,
-		        items: Melee.nationalities,
-		        selection: model.nationality
-			}).on("change:selection", function(picker, item) {
-		    	model.nationality = item;
-                log.debug('Selected ' + model.nationality);
-                //compositeDetail.set('background', item == 'British' ? 'red' : 'blue');
+		        image: 'images/british-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('British');
+			}).appendTo(compositeDetail);
+        	
+    
+        var radioAmerican = tabris.create("RadioButton", {
+        	layoutData: {left: [imageBritish, 5], top: [labelDetail, 10]},
+	        background: config.background,
+	        textColor: config.textColor
+            //,text: 'American'
+		}).on("change:selection", function(widget, selection) {
+        	if (selection) {
+            	model.nationality = 'American';
                 updateResults();
-			}).appendTo(compositeDetail);   
-             
-	    var spinDetailMorale = Spinner.create('Morale', model.morale, true, {left: 0, right: [0,3], top: [comboDetailNationality,5]}, function(valueView, incr) {
+			}
+		}).appendTo(compositeDetail);
+		    var imageAmerican = tabris.create("ImageView", {
+		    	layoutData: {left: [radioAmerican, 5], top: [labelDetail, 10]},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: 'images/american-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('American');
+			}).appendTo(compositeDetail);
+    
+        var radioFrench = tabris.create("RadioButton", {
+        	layoutData: {left: [imageAmerican, 5], top: [labelDetail, 10]},
+	        background: config.background,
+	        textColor: config.textColor
+            //,text: 'French'
+		}).on("change:selection", function(widget, selection) {
+        	if (selection) {
+            	model.nationality = 'French';
+                updateResults();
+			}
+		}).appendTo(compositeDetail);
+		    tabris.create("ImageView", {
+		    	layoutData: {left: [radioFrench, 5], top: [labelDetail, 10]},
+		        background: config.background,
+		        textColor: config.textColor,
+		        image: 'images/french-flag-sm.png'
+			}).on('tap', function(widget, opt) {
+            	select('French');
+			}).appendTo(compositeDetail);
+        
+        
+                    
+	    var spinDetailMorale = Spinner.create('Morale', model.morale, true, {left: 0, right: [0,3], top: [imageBritish,10]}, function(valueView, incr) {
 	    	model.morale = increment(model.morale, incr, -5, 5);
 	    	valueView.set("text", model.morale);
 		}).appendTo(compositeDetail);
