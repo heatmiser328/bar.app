@@ -50,16 +50,11 @@ function create(battle) {
 		}).appendTo(composite);
  
     
-    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [diceView,10]}, function(valueView, incr) {
-    	unit = increment(unit, incr, -5, 5);
-    	valueView.set("text", unit);
-	}).appendTo(composite);
-    
     var labelArmy = tabris.create("TextView", {
     	text: "Army",
         background: config.background,
         textColor: config.textColor,
-    	layoutData: {left: 15, top: [spinMorale, 10]}
+    	layoutData: {left: 15, top: [diceView,10]}
 	}).appendTo(composite);
     
     	function select(army) {
@@ -69,7 +64,7 @@ function create(battle) {
         }
     
         var radioBritish = tabris.create("RadioButton", {
-        	layoutData: {left: [labelArmy, 40], top: [spinMorale, 10]},
+        	layoutData: {left: [labelArmy, 40], top: [diceView,10]},
 	        background: config.background,
 	        textColor: config.textColor,
             //text: 'British',
@@ -81,7 +76,7 @@ function create(battle) {
 			}
 		}).appendTo(composite);
 		    var imageBritish = tabris.create("ImageView", {
-		    	layoutData: {left: [radioBritish, 5], top: [spinMorale, 10]},
+		    	layoutData: {left: [radioBritish, 5], top: [diceView,10]},
 		        background: config.background,
 		        textColor: config.textColor,
 		        image: 'images/british-flag-sm.png'
@@ -91,7 +86,7 @@ function create(battle) {
         	
     
         var radioAmerican = tabris.create("RadioButton", {
-        	layoutData: {left: [imageBritish, 40], top: [spinMorale, 10]},
+        	layoutData: {left: [imageBritish, 40], top: [diceView,10]},
 	        background: config.background,
 	        textColor: config.textColor
             //,text: 'American'
@@ -102,7 +97,7 @@ function create(battle) {
 			}
 		}).appendTo(composite);
 		    var imageAmerican = tabris.create("ImageView", {
-		    	layoutData: {left: [radioAmerican, 5], top: [spinMorale, 10]},
+		    	layoutData: {left: [radioAmerican, 5], top: [diceView,10]},
 		        background: config.background,
 		        textColor: config.textColor,
 		        image: 'images/american-flag-sm.png'
@@ -111,7 +106,7 @@ function create(battle) {
 			}).appendTo(composite);
     
         var radioFrench = tabris.create("RadioButton", {
-        	layoutData: {left: [imageAmerican, 40], top: [spinMorale, 10]},
+        	layoutData: {left: [imageAmerican, 40], top: [diceView,10]},
 	        background: config.background,
 	        textColor: config.textColor
             //,text: 'French'
@@ -122,7 +117,7 @@ function create(battle) {
 			}
 		}).appendTo(composite);
 		    tabris.create("ImageView", {
-		    	layoutData: {left: [radioFrench, 5], top: [spinMorale, 10]},
+		    	layoutData: {left: [radioFrench, 5], top: [diceView,10]},
 		        background: config.background,
 		        textColor: config.textColor,
 		        image: 'images/french-flag-sm.png'
@@ -130,7 +125,12 @@ function create(battle) {
             	select('French');
 			}).appendTo(composite);
     
-    var spinLeader = Spinner.create('Leader', leader, true, {left: 0, right: [0,3], top: [radioFrench,10]}, function(valueView, incr) {
+    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [radioFrench,10]}, function(valueView, incr) {
+    	unit = increment(unit, incr, -5, 5);
+    	valueView.set("text", unit);
+	}).appendTo(composite);
+    
+    var spinLeader = Spinner.create('Leader', leader, true, {left: 0, right: [0,3], top: [spinMorale,10]}, function(valueView, incr) {
     	leader = increment(leader, incr, -5, 5);
     	valueView.set("text", leader);
 	}).appendTo(composite);
