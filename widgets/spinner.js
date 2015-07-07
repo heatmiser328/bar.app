@@ -79,6 +79,10 @@ function create(label, value, edit, layoutData, handler) {
     	var value = valueView.get('text');
         return parseInt(value, 10);
     }
+    composite.setColor = function(color) {
+    	compositeValueView.set('background', color.background);
+    	valueView.set('textColor', color.text);
+    }
     
     return composite;
 }

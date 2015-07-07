@@ -83,17 +83,17 @@ function create(battle) {
             updateResults();
 		}).appendTo(composite);    
     
-    var detailAttack = createDetail('Attack', {left: 0, top: [labelOdds,10], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
+    var detailAttack = createDetail(battle, 'Attack', {left: 0, top: [labelOdds,10], right: '51%', bottom: 0}, attack, updateResults).appendTo(composite);
 	var compositeDivider = tabris.create("Composite", {
     	layoutData: {left: [detailAttack,0], top: [labelOdds,10], width: 2, bottom: 0},
         background: 'gray'
 	}).appendTo(composite);
-    createDetail('Defend', {left: [compositeDivider,0], top: [labelOdds,10], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
+    createDetail(battle, 'Defend', {left: [compositeDivider,0], top: [labelOdds,10], right: 0, bottom: 0}, defend, updateResults).appendTo(composite);
     
 	return composite;
 }
 
-function createDetail(label, layout, model, updateResults) {
+function createDetail(battle, label, layout, model, updateResults) {
 	var compositeDetail = tabris.create("Composite", {
         background: config.background,
         textColor: config.textColor,
@@ -111,7 +111,9 @@ function createDetail(label, layout, model, updateResults) {
     	function select(nationality) {
         	radioBritish.set('selection', nationality == 'British');
             radioAmerican.set('selection', nationality == 'American');
-            radioFrench.set('selection', nationality == 'French');
+            if (radioFrench) {
+            	radioFrench.set('selection', nationality == 'French');
+			}                
         }
     
         var radioBritish = tabris.create("RadioButton", {
@@ -156,25 +158,28 @@ function createDetail(label, layout, model, updateResults) {
             	select('American');
 			}).appendTo(compositeDetail);
     
-        var radioFrench = tabris.create("RadioButton", {
-        	layoutData: {left: [imageAmerican, 5], top: [labelDetail, 10]},
-	        background: config.background,
-	        textColor: config.textColor
-            //,text: 'French'
-		}).on("change:selection", function(widget, selection) {
-        	if (selection) {
-            	model.nationality = 'French';
-                updateResults();
-			}
-		}).appendTo(compositeDetail);
-		    tabris.create("ImageView", {
-		    	layoutData: {left: [radioFrench, 5], top: [labelDetail, 10]},
+        var radioFrench;
+    	if (battle.hasOwnProperty('startFrenchMorale')) {
+	        radioFrench = tabris.create("RadioButton", {
+	        	layoutData: {left: [imageAmerican, 5], top: [labelDetail, 10]},
 		        background: config.background,
-		        textColor: config.textColor,
-		        image: 'images/french-flag-sm.png'
-			}).on('tap', function(widget, opt) {
-            	select('French');
+		        textColor: config.textColor
+	            //,text: 'French'
+			}).on("change:selection", function(widget, selection) {
+	        	if (selection) {
+	            	model.nationality = 'French';
+	                updateResults();
+				}
 			}).appendTo(compositeDetail);
+			    tabris.create("ImageView", {
+			    	layoutData: {left: [radioFrench, 5], top: [labelDetail, 10]},
+			        background: config.background,
+			        textColor: config.textColor,
+			        image: 'images/french-flag-sm.png'
+				}).on('tap', function(widget, opt) {
+	            	select('French');
+				}).appendTo(compositeDetail);
+		}                
         
         
                     

@@ -55,8 +55,7 @@
         },
     	"startDateTime": "1777-09-19T12:00:00Z",
     	"startBritishMorale": 14,
-        "startAmericanMorale": 14,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 14
     },
 	{
     	"id": 2,
@@ -116,8 +115,7 @@
 
         "startDateTime": "1777-09-11T12:00:00Z",
     	"startBritishMorale": 20,
-        "startAmericanMorale": 20,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 20
     },
 	{
     	"id": 3,
@@ -179,11 +177,10 @@
         },
     	"startDateTime": "1781-03-15T10:00:00Z",
     	"startBritishMorale": 14,
-        "startAmericanMorale": 14,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 14
     },
 	{
-    	"id": 4,
+    	"id": 31,
     	"name": "Eutaw Springs",
     	"desc": "",
         "image": "guilford.jpg",
@@ -241,9 +238,79 @@
         },
         "startDateTime": "1781-09-08T11:00:00Z",
     	"startBritishMorale": 13,
-        "startAmericanMorale": 14,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 14
     },
+	{
+    	"id": 4,
+    	"name": "Savannah",
+    	"desc": "1779",
+        "image": "savannah.jpg",
+        "volume": 4,
+        "turns": 10,
+        "moraleLevels": [
+            {
+        		"name": "high",
+                "high": 20,
+            	"low": 11
+            },
+            {
+        		"name": "fatigued",
+                "high": 10,
+            	"low": 5
+            },
+            {
+        		"name": "wavering",
+                "high": 4,
+            	"low": 1
+            }
+        ],
+        "modifiers": {
+        	"fire": [
+            	{"name": "Lt Infantry", "value": -1},
+            	{"name": "Forest/Lt Forest/City/Covered Way", "value": -1},
+            	{"name": "Redoubt/Revetment/Siege Works/Dyke", "value": -1},
+            	{"name": "Squall/Storms/Heavy Rain", "value": -1},
+            	{"name": "Fog", "value": -1},
+            	{"name": "Artillery", "value": 1},
+            	{"name": "Mounted Dragoon", "value": 1},
+            	{"name": "Rice field/Causeway", "value": 1},
+            	{"name": "Mortar first fire", "value": 1}
+            ],
+            "melee": {
+            	"attack": [
+	            	{"name": "Incomplete British Defenses (a)", "value": 2},
+	            	{"name": "Incomplete British Defenses (b)", "value": 1},
+	            	{"name": "British attacking Franco-Americans", "value": 1},
+	            	{"name": "Allied Cavalry vs Disrupted/Shattered", "value": 1},
+	            	{"name": "Irish ferocity", "value": 1},
+	            	{"name": "Defender Disrupted/Shattered", "value": 1},
+	            	{"name": "Defender in swamp", "value": 1},
+	            	{"name": "Defender on causeway", "value": 1},
+	            	{"name": "Defender all militia", "value": 1},
+	            	{"name": "Defender surrounded", "value": 1}
+	            ],
+            	"defend": [
+	            	{"name": "Defender occupies non-destroyed Savannah", "value": -2},
+	            	{"name": "British force Franco-American to attack", "value": -2},
+	            	{"name": "Gale", "value": -2},
+	            	{"name": "Squall", "value": -1},
+	            	{"name": "British force French regulars and American militia to attack", "value": -1},
+	            	{"name": "Defender occupies Covered Way", "value": -1},
+	            	{"name": "Defender occupies Old Savannah Fort", "value": -1},
+	            	{"name": "Attack across Dyke/Stream/Up Slope/Bridge/Ford", "value": -1},
+	            	{"name": "Attack into fieldworks", "value": -1},
+	            	{"name": "Attacker all militia", "value": -1},
+	            	{"name": "Creek Indians defending alone", "value": -1},
+	            	{"name": "Attacker surrounded", "value": -1}
+	            ]
+            }
+        },
+    	"startDateTime": "1779-10-09T05:30:00Z",
+    	"startBritishMorale": 19,
+        "startAmericanMorale": 18,
+        "startFrenchMorale": 17
+    },
+    
 	{
     	"id": 5,
     	"name": "Monmouth Courthouse",
@@ -300,8 +367,7 @@
         },
         "startDateTime": "1778-06-28T10:00:00Z",
         "startBritishMorale": 20,
-        "startAmericanMorale": 20,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 20
     },
 	{
     	"id": 6,
@@ -359,8 +425,7 @@
         },
         "startDateTime": "1777-10-04T09:20:00Z",
         "startBritishMorale": 14,
-        "startAmericanMorale": 13,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 13
     },
 	{
     	"id": 7,
@@ -422,8 +487,7 @@
         },
         "startDateTime": "1779-08-29T12:00:00Z",
         "startBritishMorale": 13,
-        "startAmericanMorale": 14,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 14
     },
 	{
     	"id": 8,
@@ -493,7 +557,6 @@
         },
         "startDateTime": "1777-08-6T12:00:00Z",
         "startBritishMorale": 14,
-        "startAmericanMorale": 14,
-        "startFrenchMorale": 0
+        "startAmericanMorale": 14
     }
 ]

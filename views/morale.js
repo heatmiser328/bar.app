@@ -105,27 +105,30 @@ function create(battle) {
             	select('American');
 			}).appendTo(composite);
     
-        var radioFrench = tabris.create("RadioButton", {
-        	layoutData: {left: [imageAmerican, 40], top: [diceView,10]},
-	        background: config.background,
-	        textColor: config.textColor
-            //,text: 'French'
-		}).on("change:selection", function(widget, selection) {
-        	if (selection) {
-            	army = 'French';
-                checkMorale(diceView.dice());
-			}
-		}).appendTo(composite);
-		    tabris.create("ImageView", {
-		    	layoutData: {left: [radioFrench, 5], top: [diceView,10]},
+    	var radioFrench;
+    	if (battle.hasOwnProperty('startFrenchMorale')) {
+	        radioFrench = tabris.create("RadioButton", {
+	        	layoutData: {left: [imageAmerican, 40], top: [diceView,10]},
 		        background: config.background,
-		        textColor: config.textColor,
-		        image: 'images/french-flag-sm.png'
-			}).on('tap', function(widget, opt) {
-            	select('French');
+		        textColor: config.textColor
+	            //,text: 'French'
+			}).on("change:selection", function(widget, selection) {
+	        	if (selection) {
+	            	army = 'French';
+	                checkMorale(diceView.dice());
+				}
 			}).appendTo(composite);
+			    tabris.create("ImageView", {
+			    	layoutData: {left: [radioFrench, 5], top: [diceView,10]},
+			        background: config.background,
+			        textColor: config.textColor,
+			        image: 'images/french-flag-sm.png'
+				}).on('tap', function(widget, opt) {
+	            	select('French');
+				}).appendTo(composite);
+        }
     
-    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [radioFrench,10]}, function(valueView, incr) {
+    var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [radioFrench||radioAmerican,10]}, function(valueView, incr) {
     	unit = increment(unit, incr, -5, 5);
     	valueView.set("text", unit);
 	}).appendTo(composite);
@@ -157,6 +160,7 @@ function createArmyMorale(battle, layout) {
 	    	text: "Morale Levels",
 	        background: config.background,
 	        textColor: config.textColor,
+	        font: 'bold 20px',
 	    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
 		}).appendTo(composite);
 	    
@@ -164,28 +168,39 @@ function createArmyMorale(battle, layout) {
 	    	current = Current.get(battle);
 	    	current.britishMorale = increment(current.britishMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.britishMorale);
+	    	spinBritish.setColor(ArmyMorale.status(battle.moraleLevels, current.britishMorale));
 	        Current.save(current);
 		}).appendTo(composite);
+        spinBritish.setColor(ArmyMorale.status(battle.moraleLevels, current.britishMorale));
 	    
 	    var spinAmerican = Spinner.create({src: 'images/american-flag-sm.png'}, current.americanMorale, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
 	    	current = Current.get(battle);
 	    	current.americanMorale = increment(current.americanMorale, incr, 0, maxMorale);
 	    	valueView.set("text", current.americanMorale);
+	    	spinAmerican.setColor(ArmyMorale.status(battle.moraleLevels, current.americanMorale));
 	        Current.save(current);
 		}).appendTo(composite);
+	    spinAmerican.setColor(ArmyMorale.status(battle.moraleLevels, current.americanMorale));
 	    
-	    var spinFrench = Spinner.create({src: 'images/french-flag-sm.png'}, current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
-	    	current = Current.get(battle);
-	    	current.frenchMorale = increment(current.frenchMorale, incr, 0, maxMorale);
-	    	valueView.set("text", current.frenchMorale);
-	        Current.save(current);
-		}).appendTo(composite);
+	    var spinFrench;
+    	if (battle.hasOwnProperty('startFrenchMorale')) {
+		    spinFrench = Spinner.create({src: 'images/french-flag-sm.png'}, current.frenchMorale, true, {left: 0, right: [0,3], top: [spinAmerican,5]}, function(valueView, incr) {
+		    	current = Current.get(battle);
+		    	current.frenchMorale = increment(current.frenchMorale, incr, 0, maxMorale);
+		    	valueView.set("text", current.frenchMorale);
+		    	spinFrench.setColor(ArmyMorale.status(battle.moraleLevels, current.frenchMorale));
+		        Current.save(current);
+			}).appendTo(composite);
+		    spinFrench.setColor(ArmyMorale.status(battle.moraleLevels, current.frenchMorale));
+		}            
     
     composite.reset = function() {
     	current = Current.get(battle);
         spinBritish.setValue(current.britishMorale);
         spinAmerican.setValue(current.americanMorale);
-        spinFrench.setValue(current.frenchMorale);
+        if (spinFrench) {
+        	spinFrench.setValue(current.frenchMorale);
+		}            
     }
     
 	return composite;
