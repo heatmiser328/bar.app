@@ -41,12 +41,12 @@ function create(battle) {
     	layoutData: {centerX: 20, top: [diceView, 10]}
 	}).appendTo(composite);
     
-    var spinBritish = Spinner.create('British', british, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
+    var spinBritish = Spinner.create({src: 'images/british-flag-sm.png'}, british, true, {left: 0, right: [0,3], top: [labelView,5]}, function(valueView, incr) {
     	british = increment(british, incr, 0, 5);
     	valueView.set("text", british);
 	}).appendTo(composite);
     
-    var spinAmerican = Spinner.create('American', american, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
+    var spinAmerican = Spinner.create({src: 'images/american-flag-sm.png'}, american, true, {left: 0, right: [0,3], top: [spinBritish,5]}, function(valueView, incr) {
     	american = increment(american, incr, 0, 5);
     	valueView.set("text", american);
 	}).appendTo(composite);
