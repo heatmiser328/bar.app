@@ -175,9 +175,12 @@ function createArmyMorale(battle, layout) {
     composite.reset = function() {
     	current = Current.get(battle);
         spinBritish.setValue(current.britishMorale);
+        spinBritish.setColor(ArmyMorale.status(battle.moraleLevels, current.britishMorale));
         spinAmerican.setValue(current.americanMorale);
+	    spinAmerican.setColor(ArmyMorale.status(battle.moraleLevels, current.americanMorale));
         if (spinFrench) {
         	spinFrench.setValue(current.frenchMorale);
+		    spinFrench.setColor(ArmyMorale.status(battle.moraleLevels, current.frenchMorale));
 		}            
     }
     
