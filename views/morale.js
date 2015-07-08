@@ -115,11 +115,13 @@ function create(battle) {
     var spinMorale = Spinner.create('Morale', unit, true, {left: 0, right: [0,3], top: [radioFrench||radioAmerican,10]}, function(valueView, incr) {
     	unit = increment(unit, incr, -5, 5);
     	valueView.set("text", unit);
+        checkMorale(diceView.dice());
 	}).appendTo(composite);
     
     var spinLeader = Spinner.create('Leader', leader, true, {left: 0, right: [0,3], top: [spinMorale,10]}, function(valueView, incr) {
     	leader = increment(leader, incr, -5, 5);
     	valueView.set("text", leader);
+        checkMorale(diceView.dice());
 	}).appendTo(composite);
     
     var armyMoraleView = createArmyMorale(battle, {centerX: 0, top: [spinLeader, 15]});
