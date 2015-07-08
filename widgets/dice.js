@@ -8,14 +8,10 @@ function create(dieopts, layout, handler) {
     
 	var composite = tabris.create("Composite", {
     	layoutData: layout,
-        background: config.background,
-        textColor: config.textColor,
         highlightOnTouch: true
 	});
 	    var btnRoll = tabris.create("Button", {
 	    	layoutData: {left: 0, centerY: 0},
-	        //background: config.background,
-	        //textColor: config.textColor,
 	    	text: "Roll",
 	        image: 'images/dice/droll.png'
 		}).on("select", function() {
@@ -31,8 +27,6 @@ function create(dieopts, layout, handler) {
 	    dice.each(function(die, i) {
 	    	die.view = tabris.create("ImageView", {
 		    	layoutData: {left: [leftOf, 5], top: 2, width: 40, height: 56},
-		        background: config.background,
-		        textColor: config.textColor,
 		        image: 'images/dice/' + die.image() + '.png'
 			})
 	        .on('tap', function(widget, opt) {

@@ -9,8 +9,6 @@ var log = require('../core/log.js');
 function create(battle, callback) {
 	var composite = tabris.create("Composite", {
     	layoutData: {centerX: 0, top: config.PAGE_MARGIN},
-        background: config.background,
-        textColor: config.textColor,
         highlightOnTouch: true
 	});
 
@@ -30,15 +28,11 @@ function create(battle, callback) {
     var resultView = tabris.create("TextView", {
     	text: Current.initiative() || '',
     	layoutData: {left: [diceView, 20], top: 15},
-        background: config.background,
-        textColor: config.textColor,
         font: 'bold 24px'
 	}).appendTo(composite);
     */
     var resultView = tabris.create("Picker", {
     	layoutData: {left: [diceView, 20], top: 15},
-        background: config.background,
-        textColor: config.textColor,
         font: 'bold 24px',
         items: Initiative.nationalities(battle),
         selection: Current.initiative() || ''
@@ -51,8 +45,6 @@ function create(battle, callback) {
     
     var labelView = tabris.create("TextView", {
     	text: "Momentum",
-        background: config.background,
-        textColor: config.textColor,
     	layoutData: {centerX: 20, top: [diceView, 10]}
 	}).appendTo(composite);
     

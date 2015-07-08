@@ -8,8 +8,6 @@ function create(battle) {
 	var current = Current.get(battle);
 	var composite = tabris.create("Composite", {
     	id: 'victoryView',
-        background: config.background,
-        textColor: config.textColor,
     	layoutData: {centerX: 0, top: config.PAGE_MARGIN},
         highlightOnTouch: true
 	});

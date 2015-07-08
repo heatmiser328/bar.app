@@ -13,8 +13,6 @@ function createBattlesList(items) {
     	layoutData: {left: 0, right: 0, top: 0, bottom: 0},
 	        itemHeight: 72,
             items: items,
-            background: config.background,
-            textColor: config.textColor,
             initializeCell: function(cell) {
             	var imageView = tabris.create("ImageView", {
                 	layoutData: {left: config.PAGE_MARGIN, centerY: 0, width: 32, height: 48},

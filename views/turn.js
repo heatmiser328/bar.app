@@ -6,32 +6,24 @@ var log = require('../core/log.js');
 
 function create(battle) {
     var composite = tabris.create("Composite", {
-        background: config.background,
-        textColor: config.textColor,
         highlightOnTouch: true
 	});
     
     // header
     var imageView = tabris.create("ImageView", {
     	layoutData: {left: config.PAGE_MARGIN, top: config.PAGE_MARGIN/2, width: 96, height: 144},
-        background: config.background,
-        textColor: config.textColor,
         image: 'images/' + battle.image
 	}).appendTo(composite);
     
     var nameView = tabris.create("TextView", {
     	text: battle.desc,
-    	layoutData: {left: [imageView, config.PAGE_MARGIN], top: config.PAGE_MARGIN},
-        background: config.background,
-        textColor: config.textColor
-        //background: "rgba(0, 0, 0, 0.1)"
+    	layoutData: {left: [imageView, config.PAGE_MARGIN], top: config.PAGE_MARGIN}
+        //,background: "rgba(0, 0, 0, 0.1)"
 	}).appendTo(composite);
     
     // current
     var compositeTurn = tabris.create("Composite", {
     	layoutData: {left: [imageView, config.PAGE_MARGIN], top: [nameView, 10]},
-        background: config.background,
-        textColor: config.textColor,
         highlightOnTouch: true
     });
     // date/time

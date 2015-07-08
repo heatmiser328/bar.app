@@ -9,15 +9,11 @@ module.exports = {
     	var page = tabris.create("Page", {
         	title: "Battles of the American Revolution Assistant",
             image: "images/bar.png",
-            background: config.background,
-            textColor: config.textColor,
             topLevel: true
 		});
         var labelHeader = tabris.create("TextView", {
         	text: "Welcome! Please select a battle to get started.",
         	font: "24px",
-            background: config.background,
-            textColor: config.textColor,
             layoutData: {left: 15, top: 20}
 		}).appendTo(page);
         

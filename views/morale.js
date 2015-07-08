@@ -30,8 +30,6 @@ function create(battle) {
 	}
 
 	var composite = tabris.create("Composite", {
-        background: config.background,
-        textColor: config.textColor,
     	layoutData: {centerX: 0, top: config.PAGE_MARGIN},
         highlightOnTouch: true
 	});
@@ -43,8 +41,6 @@ function create(battle) {
 	}).appendTo(composite);
 	    var resultView = tabris.create("TextView", {
 	    	text: "",
-	        background: config.background,
-	        textColor: config.textColor,
 	    	layoutData: {left: [diceView, 20], top: 15},
 	        font: 'bold 24px'
 		}).appendTo(composite);
@@ -52,8 +48,6 @@ function create(battle) {
     
     var labelArmy = tabris.create("TextView", {
     	text: "Army",
-        background: config.background,
-        textColor: config.textColor,
     	layoutData: {left: 15, top: [diceView,10]}
 	}).appendTo(composite);
     
@@ -65,8 +59,6 @@ function create(battle) {
     
         var radioBritish = tabris.create("RadioButton", {
         	layoutData: {left: [labelArmy, 40], top: [diceView,10]},
-	        background: config.background,
-	        textColor: config.textColor,
             //text: 'British',
             selection: true
 		}).on("change:selection", function(widget, selection) {
@@ -77,8 +69,6 @@ function create(battle) {
 		}).appendTo(composite);
 		    var imageBritish = tabris.create("ImageView", {
 		    	layoutData: {left: [radioBritish, 5], top: [diceView,10]},
-		        background: config.background,
-		        textColor: config.textColor,
 		        image: 'images/british-flag-sm.png'
 			}).on('tap', function(widget, opt) {
             	select('British');
@@ -86,9 +76,7 @@ function create(battle) {
         	
     
         var radioAmerican = tabris.create("RadioButton", {
-        	layoutData: {left: [imageBritish, 40], top: [diceView,10]},
-	        background: config.background,
-	        textColor: config.textColor
+        	layoutData: {left: [imageBritish, 40], top: [diceView,10]}
             //,text: 'American'
 		}).on("change:selection", function(widget, selection) {
         	if (selection) {
@@ -98,8 +86,6 @@ function create(battle) {
 		}).appendTo(composite);
 		    var imageAmerican = tabris.create("ImageView", {
 		    	layoutData: {left: [radioAmerican, 5], top: [diceView,10]},
-		        background: config.background,
-		        textColor: config.textColor,
 		        image: 'images/american-flag-sm.png'
 			}).on('tap', function(widget, opt) {
             	select('American');
@@ -108,9 +94,7 @@ function create(battle) {
     	var radioFrench;
     	if (battle.hasOwnProperty('startFrenchMorale')) {
 	        radioFrench = tabris.create("RadioButton", {
-	        	layoutData: {left: [imageAmerican, 40], top: [diceView,10]},
-		        background: config.background,
-		        textColor: config.textColor
+	        	layoutData: {left: [imageAmerican, 40], top: [diceView,10]}
 	            //,text: 'French'
 			}).on("change:selection", function(widget, selection) {
 	        	if (selection) {
@@ -120,8 +104,6 @@ function create(battle) {
 			}).appendTo(composite);
 			    tabris.create("ImageView", {
 			    	layoutData: {left: [radioFrench, 5], top: [diceView,10]},
-			        background: config.background,
-			        textColor: config.textColor,
 			        image: 'images/french-flag-sm.png'
 				}).on('tap', function(widget, opt) {
 	            	select('French');
@@ -151,15 +133,11 @@ function createArmyMorale(battle, layout) {
 	var current = Current.get(battle);
 	var composite = tabris.create("Composite", {
     	id: 'armyView',
-        background: config.background,
-        textColor: config.textColor,
     	layoutData: layout,
         highlightOnTouch: true
 	});
 	    var labelView = tabris.create("TextView", {
 	    	text: "Morale Levels",
-	        background: config.background,
-	        textColor: config.textColor,
 	        font: 'bold 20px',
 	    	layoutData: {centerX: 20, top: config.PAGE_MARGIN}
 		}).appendTo(composite);
