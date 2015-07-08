@@ -54,7 +54,9 @@ function create(battle) {
     	function select(army) {
         	radioBritish.set('selection', army == 'British');
             radioAmerican.set('selection', army == 'American');
-            radioFrench.set('selection', army == 'French');
+            if (radioFrench) {
+            	radioFrench.set('selection', army == 'French');
+			}                
         }
     
         var radioBritish = tabris.create("RadioButton", {
