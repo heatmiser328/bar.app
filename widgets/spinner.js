@@ -1,4 +1,5 @@
 var config = require('../config.js');
+var log = require('../core/log.js');
 
 function create(label, value, edit, layoutData, handler) {
 	layoutData = layoutData || {left: 0, right: [0,3], top: 0};
@@ -64,8 +65,10 @@ function create(label, value, edit, layoutData, handler) {
         return parseInt(value, 10);
     }
     composite.setColor = function(color) {
-    	compositeValueView.set('background', color.background);
-    	valueView.set('textColor', color.text);
+    	//log.debug('set background = ' + (color.background||'initial'));
+    	compositeValueView.set('background', (color.background||'initial'));
+    	//log.debug('set text = ' + (color.text||'initial'));
+    	valueView.set('textColor', (color.text||'initial'));
     }
     
     return composite;
