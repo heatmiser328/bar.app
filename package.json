@@ -1,7 +1,7 @@
 {
   "name": "bar",
   "description": "Battles of the American Revolution Assistant",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "app.js",
   "dependencies": {
     "lodash": "^3.9.3",
