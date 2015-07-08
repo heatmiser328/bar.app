@@ -20,9 +20,9 @@ function createBattlesList(items) {
                     }).appendTo(cell);
 				var titleTextView = tabris.create("TextView", {
                 	layoutData: {left: 64, right: config.PAGE_MARGIN, top: config.PAGE_MARGIN},
-                    markupEnabled: true,
+                    markupEnabled: true//,
                     //textColor: "#4a4a4a"
-                    textColor: config.textColor
+                    //textColor: config.textColor
 				}).appendTo(cell);
                 var subtitleTextView = tabris.create("TextView", {
                 	layoutData: {left: 64, right: config.PAGE_MARGIN, top: [titleTextView, 4]},
