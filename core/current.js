@@ -21,6 +21,7 @@ function reset(battle) {
     current.battle = battle.id;
     current.turn = 1;
     current.phase = 0;
+    current.initiative = null;
     current.britishMorale = battle.startBritishMorale;
     current.americanMorale = battle.startAmericanMorale;
     current.frenchMorale = battle.startFrenchMorale;
@@ -54,7 +55,7 @@ module.exports = {
     phase: function(current) {
     	current = current || load();
         log.debug('phase: ' + current.phase);
-        return Phases.get(current.phase);
+        return Phases.get(current.phase, current.initiative);
     },
     prevPhase: function(current) {
     	current = current || load();
@@ -110,5 +111,14 @@ module.exports = {
         	save(current);
         }
         return this.turn(current);
+    },
+    initiative: function(v) {
+    	var current = load();
+    	if (typeof v != 'undefined') {
+        	current.initiative = v;
+        	save(current);
+		}            
+		log.debug('initiative: ' + current.initiative);
+        return current.initiative;
     }
 }

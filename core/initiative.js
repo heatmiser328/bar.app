@@ -3,6 +3,15 @@ var ArmyMorale = require('../core/armymorale.js');
 var log = require('../core/log.js');
 
 module.exports = {
+	nationalities: function(battle) {
+    	return ['British', 'American'];
+    },
+    noninitiative: function(nationality) {
+    	if (nationality == 'British') {
+	    	return 'American';
+        }
+    	return 'British';
+    },
 	calc: function(battle, britdie, britmomentum, amerdie, amermomentum) {
     	var current = Current.get(battle);
         var britInitMod = ArmyMorale.initiativeModifier(battle.moraleLevels, current.britishMorale);

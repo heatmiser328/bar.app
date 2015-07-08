@@ -46,6 +46,10 @@ function create(battle) {
         spinTurn.setValue(Current.turn());
 	}).appendTo(compositeTurn);
     compositeTurn.appendTo(composite);
+
+    composite.initiativeHandler = function() {
+    	spinPhase.setValue(Current.phase())
+    }
     
     composite.reset = function() {
     	spinTurn.setValue(Current.turn());

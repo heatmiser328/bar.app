@@ -64,7 +64,7 @@ function show(battle) {
 	    paging: true // enables swiping. To still be able to open the developer console in iOS, swipe from the bottom right.
 	});
     
-    tabs.push(createTab('Initiative', 'images/dice.png', Initiative.create(battle)).appendTo(folder));
+    tabs.push(createTab('Initiative', 'images/dice.png', Initiative.create(battle, turnView.initiativeHandler)).appendTo(folder));
     tabs.push(createTab('Fire', 'images/fire.png', Fire.create(battle)).appendTo(folder));
     tabs.push(createTab('Melee', 'images/melee.png', Melee.create(battle)).appendTo(folder));
     tabs.push(createTab('Morale', 'images/morale.png', Morale.create(battle)).appendTo(folder));

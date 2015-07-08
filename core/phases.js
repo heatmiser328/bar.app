@@ -1,3 +1,5 @@
+var Initiative = require('../core/initiative.js');
+
 var phases = [
 	"Initiative", 
 	"1. Movement", 
@@ -18,9 +20,14 @@ module.exports = {
 	all: function() {
     	return phases;
     },
-    get: function(idx) {
+    get: function(idx, nationality) {
     	if (idx > -1 && idx < phases.length) {
-        	return phases[idx];
+        	var phase = phases[idx];
+            if (nationality) {
+            	phase = phase.replace(/^1\./, nationality + ':');
+            	phase = phase.replace(/^2\./, Initiative.noninitiative(nationality) + ':');
+            }
+            return phase;
         }
     }
 };
