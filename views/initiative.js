@@ -17,7 +17,7 @@ function create(battle, callback) {
     	{num: 1, low: 0, high: 9, color: 'blue'}
     ], {left: 50, top: 2}, function(dice) {
     	log.debug('Determine initiative');
-        var result = Initiative.calc(battle, dice[0].value, spinBritish.getValue(), dice[1].value, spinAmerican.getValue());
+        var result = Initiative.calc(battle, Current.get(battle), dice[0].value, spinBritish.getValue(), dice[1].value, spinAmerican.getValue());
         //resultView.set('text', result)
         resultView.set('selection', result)
         Current.initiative(result);

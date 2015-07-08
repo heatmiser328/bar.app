@@ -1,4 +1,3 @@
-var Current = require('../core/current.js');
 var ArmyMorale = require('../core/armymorale.js');
 var log = require('../core/log.js');
 
@@ -12,8 +11,7 @@ module.exports = {
         }
     	return 'British';
     },
-	calc: function(battle, britdie, britmomentum, amerdie, amermomentum) {
-    	var current = Current.get(battle);
+	calc: function(battle, current, britdie, britmomentum, amerdie, amermomentum) {
         var britInitMod = ArmyMorale.initiativeModifier(battle.moraleLevels, current.britishMorale);
         var amerInitMod = ArmyMorale.initiativeModifier(battle.moraleLevels, current.americanMorale);
         
