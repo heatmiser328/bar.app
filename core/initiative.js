@@ -3,7 +3,7 @@ var log = require('../core/log.js');
 
 module.exports = {
 	nationalities: function(battle) {
-    	return ['British', 'American'];
+    	return ['British', 'American', 'Tie: Re-roll'];
     },
     noninitiative: function(nationality) {
     	if (nationality == 'British') {
