@@ -1,33 +1,72 @@
-var Initiative = require('../core/initiative.js');
+var log = require('../core/log.js');
 
-var phases = [
+var defaultPhases = [
 	"Initiative", 
-	"1. Movement", 
-	"1. Rally", 
-	"2. Def Arty Fire", 
-	"1. Rifle Fire", 
-	"1. Close Combat", 
-	"2. Movement", 
-	"2. Rally", 
-	"1. Def Arty Fire", 
-	"2. Rifle Fire", 
-	"2. Close Combat", 
+    {
+    	"American": [
+        	"American. Movement", 
+            "American. Rally", 
+			"British. Def Arty Fire", 
+            "American. Rifle Fire", 
+            "American. Close Combat"
+		],
+    	"British": [
+            "British. Movement",
+			"British. Rally", 
+			"American. Def Arty Fire", 
+			"British. Rifle Fire", 
+			"British. Close Combat"
+		]
+	},                                    
 	"End of Turn"
 ];
 
+var phases = defaultPhases;
+
 module.exports = {
-	length: phases.length,
-	all: function() {
-    	return phases;
-    },
-    get: function(idx, initnationality) {
-    	if (idx > -1 && idx < phases.length) {
-        	var phase = phases[idx];
-            if (initnationality) {
-            	phase = phase.replace(/^1\./, initnationality + ':');
-            	phase = phase.replace(/^2\./, Initiative.noninitiative(initnationality) + ':');
+	length: function() {
+    	var count = 0;
+        phases.forEach(function(phase) {
+        	if (typeof phase == 'string') {
+            	count++;
             }
-            return phase;
+            else if (typeof phase == 'object') {
+            	for (var nationality in phase) {
+	            	count += phase[nationality].length || 0;
+                }
+            }
+        });
+        return count;
+	},        
+    init: function(battle) {
+    	phases = battle.phases || defaultPhases;
+    },
+	all: function(nationality) {
+    	var l = phases.slice(0,1);
+        
+        var nat = [];
+        var othernat = [];
+        phases.forEach(function(phase) {
+            if (typeof phase == 'object') {
+            	for (var n in phase) {
+                	if (n == nationality) {
+                    	nat = phase[n];
+                    } else if (n != nationality) {
+                    	othernat = phase[n];
+                    }
+                }
+            }
+        });
+        l = l.concat(nat, othernat, phases[phases.length - 1]);
+        
+        return l;
+    },
+    get: function(idx, nationality) {
+    	log.debug('Get Phase [' + idx + '] for ' + nationality);
+        var l = this.all(nationality);
+    	if (idx > -1 && idx < l.length) {
+        	return l[idx];
         }
+        return phases[0];
     }
 };

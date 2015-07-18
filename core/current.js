@@ -27,6 +27,7 @@ function reset(battle) {
     current.frenchMorale = battle.startFrenchMorale;
     current.britishVP = 0;
     current.americanVP = 0;
+    Phases.init(battle);
     save(current);
     return current;
 }
@@ -60,7 +61,7 @@ module.exports = {
     prevPhase: function(current) {
     	current = current || load();
         if (--current.phase < 0) {
-        	current.phase = Phases.length - 1;
+        	current.phase = Phases.length(current.initiative) - 1;
             this.prevTurn(current);
         }
         save(current);
@@ -68,7 +69,7 @@ module.exports = {
     },
     nextPhase: function(current) {
     	current = current || load();
-        if (++current.phase >= Phases.length) {
+        if (++current.phase >= Phases.length(current.initiative)) {
         	current.phase = 0;
             this.nextTurn(current);
         }

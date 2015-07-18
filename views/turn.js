@@ -12,6 +12,8 @@ function formatTurn(dt) {
 
 
 function create(battle) {
+    Phases.init(battle);
+
     var composite = tabris.create("Composite", {
         highlightOnTouch: true
 	});

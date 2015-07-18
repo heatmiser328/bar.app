@@ -477,7 +477,6 @@
 	            	{"name": "Attacker all across stream/up slope", "value": -1},
 	            	{"name": "Attacker all mountain slope", "value": -2},
 	            	{"name": "Attacker all across breastworks", "value": -1},
-	            	{"name": "Chew House", "value": -2},
 	            	{"name": "Attacker all militia", "value": -1},
 	            	{"name": "Attacker surrounded", "value": -1},
 	            	{"name": "Indian ferocity", "value": -1},
@@ -485,6 +484,28 @@
 	            ]
             }
         },
+        "phases": [
+			"Initiative", 
+            {
+            	"American": [
+                	"American. Movement", 
+                    "American. Rally", 
+                    "American. Rifle Fire", 
+                    "American. Close Combat"
+				],
+            	"British": [
+                    "Indian. Standard Movement",
+					"Indian. Activation Movement", 
+					"Indian. Rally", 
+					"American. Def Arty Fire", 
+					"Indian. Rifle Fire", 
+					"Indian. Close Combat", 
+					"Indian. Final Movement", 
+					"Indian. End"
+				]
+			},                                    
+			"End of Turn"
+        ],
         "startDateTime": "1779-08-29T12:00:00Z",
         "startBritishMorale": 13,
         "startAmericanMorale": 14
