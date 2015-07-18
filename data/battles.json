@@ -434,6 +434,7 @@
         "image": "newtown.jpg",
         "volume": 8,
         "turns": 12,
+        "nationalities": ["Indian", "American"],
         "moraleLevels": [
         	{
             	"name": "high",
@@ -493,7 +494,7 @@
                     "American. Rifle Fire", 
                     "American. Close Combat"
 				],
-            	"British": [
+            	"Indian": [
                     "Indian. Standard Movement",
 					"Indian. Activation Movement", 
 					"Indian. Rally", 

@@ -3,15 +3,12 @@ var log = require('../core/log.js');
 
 module.exports = {
 	nationalities: function(battle) {
-    	return ['British', 'American', 'Tie: Re-roll'];
-    },
-    noninitiative: function(nationality) {
-    	if (nationality == 'British') {
-	    	return 'American';
-        }
-    	return 'British';
+    	var l = (battle.nationalities || ['British', 'American']).concat(['Tie: Re-roll']);
+        log.debug('Nationalities ' + l);
+        return l;
     },
 	calc: function(battle, current, britdie, britmomentum, amerdie, amermomentum) {
+    	var nationalities = this.nationalities(battle);
         var britInitMod = ArmyMorale.initiativeModifier(battle.moraleLevels, current.britishMorale);
         var amerInitMod = ArmyMorale.initiativeModifier(battle.moraleLevels, current.americanMorale);
         
@@ -21,11 +18,11 @@ module.exports = {
         
 		// initiative
 		if (result > 0) {
-        	return "British";
+        	return nationalities[0];
 		}            
 		else if (result < 0) {
-        	return "American";
+        	return nationalities[1];
         }
-        return "Tie: Re-roll";
+        return nationalities[2];
     }
 };
